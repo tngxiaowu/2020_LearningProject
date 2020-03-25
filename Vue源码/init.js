@@ -1,6 +1,6 @@
 // Vue初始化流程
 function Vue(options) {
-  // some other code
+  // .......
   this._init(options);
 }
 
@@ -11,10 +11,11 @@ Vue.prototype._init = function(options) {
   if (options.isComponent) {
     initInternalCompent(); // 组件入口
   } else {
-    vm.options = mergeOptions();
+    vm.options = mergeOptions(); // 根节点合并配置项
   }
-  // 初始化一系列事件
+  // (在完成配置项初始化后)初始化一系列事件
   initEvents();
+  
   callHook();
 
   // 根节点入口
@@ -23,11 +24,13 @@ Vue.prototype._init = function(options) {
   }
 };
 
-// 节点挂载
+// Step 2: 节点挂载
 Vue.prototype.$mount = function(el, dryating) {
   el && query(el);
   // el挂载点检查
   const options = this.$options;
+  
+  // 生成render函数
   if (!options.render) {
     // 有两种情形
     // template语法
@@ -35,11 +38,10 @@ Vue.prototype.$mount = function(el, dryating) {
     // 模板语法
     const { render, staticRenderFn } = compileToFunctions();
 
-    // 这也是编译的输出
+    // 编译输出 挂载到options上
     options.render = render;
     options.staticRenderFn = staticRenderFn;
   }
-
   return mount.call(this, el, dryating);
 };
 
@@ -49,17 +51,18 @@ function mount(vm, el, dryating) {
   return mountComponent(this, el, dryating);
 }
 
+
 function mountComponent(vm, el, dryating) {
   vm.$el = el; // 挂载点
 
   let updateComponent;
 
-  // 渲染节点
+  // Step 3: 渲染节点
   updateComponent = () => {
     vm._update(vm._render(), hydrating);
   };
 
-  // 数据监听
+  // Step 4: 数据监听
   new Watcher(
     vm,
     updateComponent,
@@ -69,5 +72,6 @@ function mountComponent(vm, el, dryating) {
     },
     true
   );
+
   return vm;
 }
