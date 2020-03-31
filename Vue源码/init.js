@@ -152,7 +152,6 @@ function createRender(options){
     render,
     createApp: createAppAPI(render)
   }
-
 }
 
 
