@@ -97,6 +97,7 @@ const App = {
         return { state }
     }
 }
+
 createApp().mount(App, '#app')
 
 
@@ -113,6 +114,66 @@ function createApp(...args){
   };
 
   return app;
+}
+
+const {  render:baseRender, createApp:baseCreateAPP  }  =
+createRender( {
+  patchProp,
+  ...nodeOps,
+} )
+
+
+
+function createRender(options){
+  const { 
+    insert: hostInsert
+  } = options;
+
+  // 一系列Function
+  function patch(){}
+
+  function processText(){}
+
+  // someOther
+  const render = (vnode,container) =>{
+    if(vnode == null){
+      if(container._vnode){
+        unmount( container._vnode,null,null,true);
+      }
+    }else{
+      patch(container._vnode || null,vnode,container  )
+    }
+
+    flushPostFlushCbs();
+    container._vnode = vnode;
+  }
+
+  return {
+    render,
+    createApp: createAppAPI(render)
+  }
+
+}
+
+
+function createAppApi( render ){
+  return function( rootComponent, rootProps = null ){
+
+    const context = createAppContext(); //创建app执行上下文
+
+    const installedPlugins = new Set();
+
+  }
+
+
+  return app;
+}
+
+
+
+
+function baseCreateAPP( options ){
+
 }
 
 
