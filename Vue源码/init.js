@@ -100,29 +100,29 @@ const App = {
 
 createApp().mount(App, '#app')
 
-
+/************************ 详细代码执行部分  ********************************/
 // 源码执行部分
-
 // 创建并返回一个app对象
 function createApp(...args){
   const app = baseCreateAPP(...args);
-
   const { mount } = app;
+  app.mount =  (container) =>{
+    if(isString(container)){
+      container = document.querySelector(container);
+    }
+    const component = app._component;
 
-  app.mount =  () =>{
-
+    // 处理组件上的一些逻辑
+    container.innerHtml = '';
+    return mount(container);
   };
-
   return app;
 }
 
-const {  render:baseRender, createApp:baseCreateAPP  }  =
-createRender( {
+const {  render:baseRender, createApp:baseCreateAPP  } = createRender( {
   patchProp,
   ...nodeOps,
-} )
-
-
+});
 
 function createRender(options){
   const { 
@@ -154,26 +154,82 @@ function createRender(options){
   }
 }
 
-
-function createAppApi( render ){
+function createAppAPI( render ){
   return function( rootComponent, rootProps = null ){
-
     const context = createAppContext(); //创建app执行上下文
+    const installedPlugins = new Set(); // 安装插件
 
-    const installedPlugins = new Set();
+    let isMounted = false; // 标记位 判断是否加载载
+    // 定义一个app对象
+    const app = {
+      _component,
+      _props,
+      _container,
 
+      get config(){
+        return context.config;
+      },
+      set config(){
+        if(__DEV__){
+
+        }
+        
+      },
+
+      use(){
+
+      },
+
+      mixin(){
+
+      },
+
+      component(){
+
+      },
+
+      directive(){
+
+      },
+      // 用到了render方法
+      mount( rootConstainer ){
+        if(!isMounted){
+          // 创建节点
+          // createVNode也是个核心方法
+          const vnode = createVNode( rootComponent,rootProps );
+          vnode.appContext = context;
+
+          if(__BUNDLE__ && __DEV__){
+
+          }
+          // 渲染
+          render(vnode,rootConstainer);
+          isMounted = true;
+          app._container = rootConstainer;
+
+          // 所以 这个对象到底是什么?
+          return vnode.componnet.proxy;
+        } 
+
+      },
+      // 用到了render方法
+      unmount(){
+      },
+      provide(){
+
+      }
+
+    };
+    return app;
   }
-
-
-  return app;
 }
-
-
-
 
 function baseCreateAPP( options ){
 
 }
+
+
+/**  mount方法 ****/
 
 
 

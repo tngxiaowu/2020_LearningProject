@@ -78,7 +78,20 @@ class LinkedList{
 
         // 引用重写就好了
         prevNode.next = prevNode.next.next;
+    }
 
+    
+    // 单链表反转 -> 将 1-3-2 反转为 2-3-1 
+    reversed(){
+        const currentNode = this.head; // 链表的特性 -> 从头开始查找
+        let pre = null;
+        while(currentNode.next){
+            let next = currentNode.next;
+            currentNode.next = pre; // 当前节点的执行
+            pre = currentNode;
+            currentNode = next; // 下一个节点的指向前一个
+        }
+        return pre;
     }
 
 }
