@@ -103,6 +103,9 @@ createApp().mount(App, '#app')
 /************************ 详细代码执行部分  ********************************/
 // 源码执行部分
 // 创建并返回一个app对象
+// runtime-dom -> src -> index.ts
+
+// Step 1 : createApp
 function createApp(...args){
   const app = baseCreateAPP(...args);
   const { mount } = app;
@@ -111,7 +114,6 @@ function createApp(...args){
       container = document.querySelector(container);
     }
     const component = app._component;
-
     // 处理组件上的一些逻辑
     container.innerHtml = '';
     return mount(container);
@@ -119,22 +121,25 @@ function createApp(...args){
   return app;
 }
 
+// Step 2:  createRender ->  baseCreateAPP
 const {  render:baseRender, createApp:baseCreateAPP  } = createRender( {
   patchProp,
   ...nodeOps,
 });
 
+// runtime-core -> src -> render.ts
 function createRender(options){
   const { 
     insert: hostInsert
   } = options;
 
   // 一系列Function
+  // patch方法就是最终的比较
   function patch(){}
 
   function processText(){}
 
-  // someOther
+  // Some Other Codes
   const render = (vnode,container) =>{
     if(vnode == null){
       if(container._vnode){
@@ -154,6 +159,8 @@ function createRender(options){
   }
 }
 
+// Step 3: createApp -> createAppAPI
+// runtime-core / apiCreateApp
 function createAppAPI( render ){
   return function( rootComponent, rootProps = null ){
     const context = createAppContext(); //创建app执行上下文
@@ -203,7 +210,8 @@ function createAppAPI( render ){
 
           }
           // 渲染
-          render(vnode,rootConstainer);
+          render(vnode,rootConstainer); // 渲染
+
           isMounted = true;
           app._container = rootConstainer;
 
@@ -223,13 +231,72 @@ function createAppAPI( render ){
     return app;
   }
 }
+// 至此返回一个app对象
 
-function baseCreateAPP( options ){
+/**  mount方法 ****/
+// Step 4: app.mount();
+// 重写的mount方法
+app.mount = (container) => {
+  if(isString(container)){
+    container = document.querySelector(container);
+  }
+  const component = app._component;
+  // 处理组件上的一些逻辑
+  container.innerHtml = '';
+  return mount(container);
+};
+
+// 原生mount方法
+function mount( rootConstainer ){
+  if(!isMounted){
+    // 创建节点
+    // createVNode也是个核心方法
+    const vnode = createVNode( rootComponent,rootProps );
+    vnode.appContext = context;
+
+    if(__BUNDLE__ && __DEV__){
+
+    }
+    // 渲染
+    render(vnode,rootConstainer); // 渲染
+
+    isMounted = true;
+    app._container = rootConstainer;
+
+    // 所以 这个对象到底是什么?
+    return vnode.componnet.proxy;
+  } 
 
 }
 
+// runtime-core / src / vnode.ts
+function createVNode( type,props,children,patchFlag,dynamicProps){
+  // 将vnode类型信息编译成bitmap
+  const shapeFlag;
+  const vnode = {
 
-/**  mount方法 ****/
+  }
+
+  normalizeChildren( vnode,children);
+  return vnode;
+}
+
+
+/**  render方法 ****/
+const render = (vnode,container) =>{
+  if(vnode == null){
+    if(container._vnode){
+      unmount( container._vnode,null,null,true);
+    }
+  }else{
+    patch(container._vnode || null,vnode,container  )
+  }
+
+  flushPostFlushCbs();
+  container._vnode = vnode;
+}
+
+/**  patch方法 ****/
 
 
 
