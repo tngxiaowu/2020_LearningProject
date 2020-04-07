@@ -135,9 +135,38 @@ function createRender(options){
 
   // 一系列Function
   // patch方法就是最终的比较
-  function patch(){}
-
-  function processText(){}
+  function patch(){
+    // 不相同节点的情况下
+    if( n1 != null && !isSameVNodeType(n1,n2)){
+      unmount();
+    }
+    const { type, shapeFlag } = n2;
+    // 节点相同
+    switch(type){
+      case Text:
+        processText();
+        break;
+      case Comment:
+        processComment();
+        break;
+      case Fragment:
+        processFragment();
+        break;
+      case Portal:
+        processPortal();
+        break;
+      default:
+        if( shapeFlag && shapeFlag.ELEMENT ){
+          processElement();
+        }else if( shapeFlag && shapeFlag.COMPONENT ){
+          processComponent();
+        }else if(  __FEATYRE__ && shapeFlag ){
+          process();
+        }else if( __DEV__ ){
+          warn();
+        }
+    }
+  }
 
   // Some Other Codes
   const render = (vnode,container) =>{
@@ -297,6 +326,88 @@ const render = (vnode,container) =>{
 }
 
 /**  patch方法 ****/
+// runtime-core -> src -> render.ts
+function patch(){
+  // 不相同节点的情况下
+  if( n1 != null && !isSameVNodeType(n1,n2)){
+    unmount();
+  }
+  const { type, shapeFlag } = n2;
+  // 节点相同
+  switch(type){
+    case Text:
+      processText();
+      break;
+    case Comment:
+      processComment();
+      break;
+    case Fragment:
+      processFragment();
+      break;
+    case Portal:
+      processPortal();
+      break;
+    default:
+      if( shapeFlag && shapeFlag.ELEMENT ){
+        processElement();
+      }else if( shapeFlag && shapeFlag.COMPONENT ){
+        processComponent();
+      }else if(  __FEATYRE__ && shapeFlag ){
+        process();
+      }else if( __DEV__ ){
+        warn();
+      }
+  }
+}
+
+
+// runtime-core -> src -> render.ts
+function processComponent( n1,n2,container,anchor,parentComponent,parentSuspense,isSVG,optimize ){
+  if(n1 == null ){
+    // Keep-Alive逻辑
+    if(ShapeFlags.COMPONNET_KEPT_ALIVE){
+
+    }else{
+      mountComponent( n2,container, anchor,parentComponent,parentSuspense, isSVG);
+    }
+  }else{
+    const instance = (n2.component = n1.component)!
+
+    if(shouldUpdateComponent(n1,n2,parentComponent,optimize)){
+      if(instance.asyncDep){
+        updateComponentPreRender();    
+      }else{
+        instance.next = n2;
+        instance.update();
+      }
+    
+    }else{
+      n2.component = n1.component;
+      n2.el = n1.el;
+    }
+  }
+
+  if(n2.ref !== null && parentComponent !== null){
+    setRef();
+  }
+}
+
+function mountComponent( initialVNode,container,anchor,parentComponent,parentSuspense,isSVG ){
+  const instance = createComponentInstance();
+
+  if(__DEV__){
+
+  };
+
+  setupComponent(instance, parentSuspense)
+
+
+  setup
+
+}
+
+
+
 
 
 
