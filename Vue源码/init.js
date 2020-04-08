@@ -394,17 +394,44 @@ function processComponent( n1,n2,container,anchor,parentComponent,parentSuspense
 
 function mountComponent( initialVNode,container,anchor,parentComponent,parentSuspense,isSVG ){
   const instance = createComponentInstance();
-
-  if(__DEV__){
-
-  };
-
+  if(__DEV__){};
   setupComponent(instance, parentSuspense)
-
-
-  setup
-
 }
+
+// runtime-core -> src ->  component.ts 
+// 接受的参数有vnode数据结构 以及父节点
+function createComponentInstance( vnode, parent ){
+  const appContext =  (parent ? parent.appContext : vnode.appContext) || emptyAppContext;
+  const instance = {
+    parent,
+    vnode,
+    appContext,
+    ...OtherParams // 其余参数
+  };
+  instance.root = parent ? parent.root : instance;
+  return instance; // 返回的是一个ComponentInternalInstance(组件内部实例)
+}
+
+// 
+function setupComponent(instance,parentComponent){
+  const propsOptions = instance.type.props;
+  const { props,children,shapeFlag } = instance.vnode;
+
+  resolveProps();
+  resolveSlots();
+
+  if(shapeFlag && shapeFlag.STATEFUL_COMPONENT){
+    setupStatefulComponent();
+  }
+}
+
+function setupStatefulComponent(){
+  
+}
+
+
+
+
 
 
 

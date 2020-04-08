@@ -1,5 +1,5 @@
 // 冒泡排序
-function budleSequence(arr){
+function bubbleSort(arr){
     let n = arr.length;
     if (n <= 1) return;
         for (let i = 0; i < n; ++i) { 
@@ -18,4 +18,41 @@ function budleSequence(arr){
         }
     return arr;
 }
+
+// 插入排序
+function InsertionSort(arr){
+    let n = arr.length;
+    if (n <= 1) return;
+    for (let i = 1; i < n; ++i) { 
+        let value = a[i];
+        let j = i - 1; // 查找插入的位置
+        for (; j >= 0; --j) { 
+
+            if (a[j] > value) {
+            a[j+1] = a[j]; // 数据移动
+        } }  
+        a[j+1] = value; // 插入数据
+    }
+}
+
+// 从为排序区域 拿一个数据插到已排序区域
+const arr = [3,4,2,1]; 
+
+function InsertSort(arr){
+    let n = arr.length;
+    // 从未排序区域爱是
+    for(let i = 1; i < n.length; i++){
+        let j = i - 1;
+        let value = a[i];
+        for(; j >= 0; j--){
+            if(a[j] > value ){
+                a[j+1] = value;
+            }
+        }
+
+    }
+
+}
+
+
 
