@@ -137,10 +137,7 @@ function response(data) {
 
 
     // 任务调度
-
-
     console.log( "A" );
-    
     // 定时器触发是为了调度下一个事件循环的tick
     setTimeout( function(){
         console.log( "B" );
@@ -154,3 +151,34 @@ function response(data) {
     });
 
 
+// P165 
+// 三个函数嵌套在一起
+// 函数1
+listen( "click", function handler(evt){
+    // 函数2
+    setTimeout( function request(){
+    // 函数3
+        ajax( "http://some.url.1", function response(text){
+            if (text == "hello") {
+            handler();
+            }
+            else if (text == "world") {
+            request();
+            }
+            } );
+    }, 500) ;
+});
+
+// 异步代码程序中总是会有很多噪声 这些噪声使得我们无法集中精力去追踪代码流
+doA(function(){
+    doB();
+    doC( function(){
+        doD(); 
+    });
+    doE();
+})
+doF();
+// 难以追踪代码的执行顺序
+
+
+// 问题是嵌套造成了这样的原因么
