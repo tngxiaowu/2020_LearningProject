@@ -66,10 +66,25 @@ function SelectSort(arr){
 
         }
     }
+}
+
+// 递推公式
+
+mergesSort();
+
+function MergesSort(arr){
+    let n = arr.length;
+    if(n <= 1) return;
+
+    let middleNumber = Math.floor(n / 2);
+
+
+
 
 
 
 }
+
 
 
 

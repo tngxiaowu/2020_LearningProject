@@ -183,10 +183,53 @@ doF();
 
 // 问题是嵌套造成了这样的原因么
 
-{
-    payInfo:{
-        
-    },
-    refunnId:'001',
+listen('click',handler);
 
+function handler(){
+    setTimeout(  request,3000);
+}
+
+function request(){
+    ajax('http://some.url.1',response);
+}
+
+function response(text){
+    if(text === 'hello'){
+        handler();
+    }else if(text === 'world'){
+        request();
+    }
+}
+
+// 使用手工硬编码的方式 看似是解决了 代码组织的凌乱 
+// 但是回调依旧充满了脆弱
+// 比如 异常处理如何处理?
+// 即使你指定了所有的事件和可能性 那么你的代码还是依旧会变得很糟糕
+
+
+// 为了解决信任问题 我需要写很多代码
+function asyncify(fn) {
+    var orig_fn = fn, 
+    intv = setTimeout( function(){
+        intv = null;
+        if (fn) fn();
+    }, 0 );
+    
+    fn = null;
+    
+    return function() {
+    // 触发太快，在定时器intv触发指示异步转换发生之前？
+        if (intv) {
+            fn = orig_fn.bind.apply(
+            orig_fn,
+            // 把封装器的this添加到bind(..)调用的参数中，
+            // 以及克里化（currying）所有传入参数
+            [this].concat( [].slice.call( arguments ) )
+            );
+        }// 已经是异步
+        else {
+            // 调用原来的函数
+            orig_fn.apply( this, arguments );
+            }
+    };
 }
