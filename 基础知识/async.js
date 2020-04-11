@@ -233,3 +233,46 @@ function asyncify(fn) {
             }
     };
 }
+
+// Promise
+var x , y = 5;
+console.log( x + y ); // NAN
+// 我们知道上述这段代码肯定会输出NAN 因为x的值没有确定
+
+// 如果通过fetch包裹的是 一个异步表达式 
+// 我们怎么确定 在 得到x 以及 得到y后 才进行相加操作呢
+console.log( fectch(x) + fetch(y) );
+// 初次之外 怎么表达依赖关系(y的值需要x值获得之后?)
+// 一种基于回调解决的方案为: 
+function add(getX,getY,cb) {
+    var x, y;
+    getX(function(xVal){
+        x = xVal;
+        // 两个都准备好了？
+        if (y != undefined) {
+        cb( x + y ); // 发送和
+        }
+    } );
+    getY( function(yVal){
+        y = yVal;
+        // 两个都准备好了？
+        if (x != undefined) {
+        cb( x + y ); // 发送和
+        }
+    } );
+    }
+    // fetchX() 和fetchY()是同步或者异步函数
+    add( fetchX, fetchY, function(sum){
+        console.log( sum ); // 是不是很容易？
+    } );
+
+    // 这个函数将未来和现在归一化了 所以确保了add运算的输出时可以预测的
+    // 也就是说 从现在到未来的时间 他们的行为都是一致的
+    // 说的直白点 就是为了统一现在和未来 我们都将它处理为了未来
+
+    // 对比回调函数 是不是更简单以及清楚？
+    function addByPromise(x,y){
+        return Promisea.all([fetch(X),fetch(y)]).then( values  =>{
+            return values[0] + values[1];
+        })
+    }

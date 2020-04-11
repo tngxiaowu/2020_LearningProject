@@ -63,7 +63,6 @@ function SelectSort(arr){
         let j = i + 1;
         let value = a[i];
         if(a[j] > value ){
-
         }
     }
 }
