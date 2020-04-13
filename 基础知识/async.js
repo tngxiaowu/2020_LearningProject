@@ -276,3 +276,53 @@ function add(getX,getY,cb) {
             return values[0] + values[1];
         })
     }
+
+
+    const d = [ 
+        { name:'老李',sex:'01' } ,
+        { name:'老王',sex:'00' }, 
+        { name:'老哥',sex:'01' }   ]
+
+    
+
+    function getPrecent(arr){
+        // 获取数组长度
+        const l = arr.length;
+        // 标志位 统计男生条数
+        const m = 0;
+        // 遍历数组
+        d.forEach( item =>{
+        // 是男生 m+1
+            if(item === '01'){
+                m++
+            };
+        })
+        // 最后 男性/总量
+        return m/l
+    }
+
+
+    // P184
+    function Foo(){
+        console.log('It is demo');
+    }
+
+    Foo(); // 这个函数可能立即完成任务 也有可能需要一段时间
+
+    // 需要某种方法 在foo完成的时候得到通知 以便可以继续下一步
+    
+    // 类似于 观察者模式 
+    // 一旦发生变化 就会通知
+    window.addEventListener('notify', () =>{
+
+    })
+
+    // 或者js需要自己创建一个事件订阅对象
+
+    function Foo(){
+        // 开始做点可能消耗时间的操作
+
+        // 构造一个Listern事件对象
+        return listeners;
+    }
+

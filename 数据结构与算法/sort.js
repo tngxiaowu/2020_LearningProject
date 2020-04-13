@@ -71,19 +71,67 @@ function SelectSort(arr){
 
 mergesSort();
 
-function MergesSort(arr){
-    let n = arr.length;
-    if(n <= 1) return;
-
-    let middleNumber = Math.floor(n / 2);
 
 
+let endToken = arr.length - 1,
+startToken = 0,
+middleToken = Math.floor(endToken/2);
+
+// 1 2 3 4 5 6 7 8 9 10 11 12 13
+// 中位数是6 
+// [0,6],[7,12]
+// [0,3] [4,6] / [7,9] [10.12]
+// [0,1] [2,3] [4,6](分解不了) /
+// [0,3],[4,7]
+// [0,1],[2,3]  /  [4,5] [6,7]
 
 
-
+// 0 - 3   4 - 8
+// [startToke, middleToken]   [middleToken,endToken]
+// 0 - 2 3 - 5 / 
+if(middleToken < endToken){
 
 }
 
 
+
+
+
+// 整体合并排序
+function MergesSort_g(arr){
+    let n = arr.length;
+    if(n <= 1) return;
+
+    let middleNumber = Math.floor(n / 2);
+}
+
+// 小的合并排序
+// 传入的参数分别为 数组 起始项 
+function MergesSort_scope(arr,start,end){}
+
+function MergeSort_global(){
+
+}
+
+function merge(){
+
+}
+
+
+
+
+merge_sort(A, n) {
+}
+
+merge_sort_c(A, 0, n-1)
+ 
+* 递归调用函数
+merge_sort_c(A, p, r) { // 递归终止条件 if p >= r then return
+ 
+* 取p到r之间的中间位置q q = (p+r) / 2
+* 分治递归
+merge_sort_c(A, p, q) merge_sort_c(A, q+1, r)
+ 
+// 将A[p...q]和A[q+1...r]合并为A[p...r] }merge(A[p...r], A[p...q], A[q+1...r])
 
 
