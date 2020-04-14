@@ -319,10 +319,89 @@ function add(getX,getY,cb) {
 
     // 或者js需要自己创建一个事件订阅对象
 
-    function Foo(){
+    function createListeners(fn){
         // 开始做点可能消耗时间的操作
+        fn();
 
-        // 构造一个Listern事件对象
+        // 返回一个Listern事件对象
         return listeners;
     }
+
+    const evt =  createListeners();
+
+    evt.on('success',()=>{
+        console.log('It Success');
+    });
+
+    evt.on('fail',()=>{
+        console.log('Sorry, the process failed');
+    });
+
+    // evt就是分离的关注点之间一个中立的第三方协商机制
+    // 所以 上述就是对Promise的一个模拟
+
+    const p = new Promise( () =>{
+        console.log(this);
+    }) // 返回了一个promise对象
+
+
+    const e = new Promise( function( resolve,reject ){ setTimeout( function(){
+        console.log('hello world');
+        // 通过resolve去传递至 类似于通知其他人
+        resolve(1);
+    },3000 ) } )
+
+    // 一旦异步完成之后resolve数据 就会调用then函数 
+    e.then( res =>{ console.log(res,'what is res')});
+
+
+
+    const q = new Promise( function( resolve,reject ){
+
+        resolve(1);
+    } )
+
+    q.then( function(){
+        console.log('A')
+        q.then( function(){
+            setTimeout( function(){
+                console.log('C');
+            },0)
+            
+        } )
+    } )
+    q.then( function(){
+        setTimeout( function(){
+            console.log('B');
+        },0)
+    } )
+
+
+    // 独立的promise之间的调用顺序是不确定的
+    var p3 = new Promise( function(resolve,reject){
+        resolve( "B" );
+    } );
+    
+    var p1 = new Promise( function(resolve,reject){
+        resolve( p3 );
+    } );
+    
+    p2 = new Promise( function(resolve,reject){
+        resolve( "A" );
+    } );
+    // p1的回调放在p2回调之后
+    p1.then( function(v){
+        console.log( v );
+    });
+
+    p2.then( function(v){
+        console.log( v );
+    });
+    // A B <-- 而不是像你可能认为的B A
+
+
+
+
+
+
 
