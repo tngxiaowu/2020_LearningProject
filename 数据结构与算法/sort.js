@@ -68,8 +68,40 @@ function SelectSort(arr){
 }
 
 // 递推公式
+// merge_sort(p…r) = merge(merge_sort(p…q), merge_sort(q+1…r))
 
-mergesSort();
+// 研究这个算法怎么写的~
+const mergeSort = ( arr ) =>{
+    let l = arr.length;
+    if(l <= 1) return;
+    let middle = Math.floor(l/2);
+    let left = arr.slice(0,middle);
+    let right = arr.slice(middle);
+    return mergeArr(mergeSort(left),mergeSort(right));
+}
+
+
+const mergeArr = (left,right) =>{
+    let temp = [];
+    let leftIndex = 0,
+    let rightIndex = 0;
+
+    while(left.length > leftIndex & right.length > rightIndex){
+        if(left[leftIndex] <= right[index] ){
+            temp.push(left[leftIndex])
+            leftIndex++;
+        }else{
+            temp.push( right[rightIndex]);
+            rightIndex++;
+        }
+    }
+
+    return temp.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
+
+}
+
+
+
 
 
 
