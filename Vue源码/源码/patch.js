@@ -55,7 +55,12 @@ function patchVnode( oldVnode,vnode,insertedVnodeQueue,owenerArray,index,removeP
     postPatch();
 }
 
+// 子节点更新策略
 function updateChildren(){
+    
+
+
+
 
 }
 

@@ -80,13 +80,12 @@ const mergeSort = ( arr ) =>{
     return mergeArr(mergeSort(left),mergeSort(right));
 }
 
-
 const mergeArr = (left,right) =>{
     let temp = [];
     let leftIndex = 0,
     let rightIndex = 0;
 
-    while(left.length > leftIndex & right.length > rightIndex){
+    while(left.length > leftIndex && right.length > rightIndex){
         if(left[leftIndex] <= right[index] ){
             temp.push(left[leftIndex])
             leftIndex++;
@@ -97,9 +96,10 @@ const mergeArr = (left,right) =>{
     }
 
     return temp.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
-
 }
 
+let r = mergeSort([8,7,6,5,4,3]);
+console.log( r,'what is r' );
 
 
 
@@ -167,3 +167,40 @@ merge_sort_c(A, p, q) merge_sort_c(A, q+1, r)
 // 将A[p...q]和A[q+1...r]合并为A[p...r] }merge(A[p...r], A[p...q], A[q+1...r])
 
 
+
+const mergeArr = (left, right) => {
+    let temp = []
+    let leftIndex = 0
+    let rightIndex = 0
+    // 判断2个数组中元素大小，依次插入数组
+    while (left.length > leftIndex && right.length > rightIndex) {
+        if (left[leftIndex] <= right[rightIndex]) {
+            temp.push(left[leftIndex])
+            leftIndex++
+        } else {
+            temp.push(right[rightIndex])
+            rightIndex++
+        }
+    }
+    // 合并 多余数组
+    return temp.concat(left.slice(leftIndex)).concat(right.slice(rightIndex))
+}
+
+// [8,7,6,5,4,3,2,1]
+// [8,7,6,5] [4,3,2,1]
+// [8,7] [6,5] / [4,3] [2,1]
+// 8,7, 6,5 4,3, 2, 1 
+
+const mergeSort = (arr) => {
+    // 当任意数组分解到只有一个时返回。
+    if (arr.length <= 1) return arr
+    const middle = Math.floor(arr.length / 2) // 找到中间值
+    const left = arr.slice(0, middle) // 分割数组
+    const right = arr.slice(middle)
+    // 递归 分解 合并
+    return mergeArr(mergeSort(left), mergeSort(right))
+}
+
+
+const r = mergeSort([8,7,6,5,4,3,2,1]);
+console.log( r,'r' );
