@@ -1,3 +1,5 @@
+import { compose } from "async";
+
 // 异步回调是最单解决 从现在到将来 等待的一种方法
 const res = ajax(api);
 console.log( res );
@@ -398,6 +400,166 @@ function add(getX,getY,cb) {
         console.log( v );
     });
     // A B <-- 而不是像你可能认为的B A
+
+
+    var p1 = Promise.resolve( 42 );
+    var p2 = Promise.resolve( p1 );
+
+
+    p1 === p2 
+
+
+
+    // P198
+    
+    // p.then创建了一个新的promise
+    var p2 = p.then( function(v){
+        console.log( v ); // 21
+        // 用值42填充p2
+        return v * 2;
+    });
+    // 连接p2( p2.then又创建了一个新的promise )
+    p2.then( function(v){
+        console.log( v ); // 42
+    });
+
+    var p = Promise.resolve( 21 );
+    p.then(  v =>{
+        console.log(v,'v1');
+        return v * 2;
+    }).then(  v =>{
+        console.log(v,'v2');
+    })
+
+    // 现在第一个then就是异步序列中的第一步 第二个就是第二步
+
+    // 另外 如果步骤2 需要 等待步骤1异步来完成某些东西 怎么办
+
+    // p199
+    {
+        let p = Promise.resolve(21);
+        p.then( v =>{
+            console.log(v,'v1');
+            // 如果我们在这里引入异步 那么会仍旧按照顺序正常工作
+            return new Promise( function( resolve,reject ){
+                resolve( v * 2);
+            }  )
+        }).then(  v =>  {
+            console.log( v ,'v2');
+        })
+    }
+
+    // 这就提供了一个非常强大的能力 
+    // 不管我们想要多少个异步不住 每一步都能根据需要等待下一步(异步或者非异步都可以)
+    {
+        let p = Promise.resolve(21);
+        p.then( v =>{
+            console.log(v,'v1');
+            // 如果我们在这里引入异步 那么会仍旧按照顺序正常工作
+            return new Promise( function( resolve,reject ){
+                setTimeout( function(){
+                    resolve( v * 2);
+                } ,3000 )
+            }  )
+        }).then(  v =>  {
+            console.log( v ,'v2');
+        })
+    }
+
+    // 这是一种比较优秀的能力
+    {
+        function delay(time) {
+            return new Promise( function(resolve,reject){
+            setTimeout( resolve, time );
+            } );
+            }
+            delay( 3000 ) // 步骤1
+            .then( function STEP2(){
+            console.log( "step 2 (after 100ms)" );
+            return delay( 5000 );
+            } )
+            .then( function STEP3(){
+            console.log( "step 3 (after another 200ms)" );
+            } )
+            .then( function STEP4(){
+            console.log( "step 4 (next Job)" );
+            return delay( 5000 );
+            } )
+            .then( function STEP5(){
+            console.log( "step 5 (after another 50ms)" );
+            } )
+    }
+
+    // 想要通过本身并不支持promise的工具实现promise的异步流程控制
+
+    const d = new Promise( function( onFulifilled,onRejected){
+
+    })
+
+
+    {
+        try{
+            setTimeout( function(){
+                bar();
+            },1000 )
+
+        }catch(err){
+            console.log('Can we catch the error?',err);
+        }
+    }
+
+    // 回调中的错误处理 -> error-first
+    {
+        function foo(cb) {
+            setTimeout( function(){
+            try {
+                    var x = baz.bar();
+                    cb( null, x ); // 成功！
+                }catch (err) {
+                    cb( err );
+            }
+            }, 100 );
+        }
+        
+        foo( function(err,val){
+            if (err) {
+            console.error( err ); // 烦 :(
+            }
+            else {
+            console.log( val );
+            }
+            } );
+    }
+
+    // Promise的回调 并没有被设计成error-firt设计风格
+    // 而是采用了分离回调(split-callback)风格 -> 一个回调用于完成 一个回调用于失败
+    
+    
+    
+    {
+        const p = Promise.resolve(42);
+        p.then( function fulFilled(v){
+            console.log(v.toLowerCase())
+        },function reject(err){
+            console.log('o[[s,err happed');
+        })
+    }
+
+    // 如果无效地使用Promise API 那么就会立即会获得一个错误
+    {   
+        function handlerError( onFulfilled, onRejected){
+            console.log('oppos! see What happened?',arguments);
+            // onFulfilled(1);
+            // onRejected('stop push')
+        }
+        const p = Promise.resolve(42);
+        p.then( function fulFilled(v){
+            console.log(v.toLowerCase())
+        }).catch( handlerError )
+
+        // 说的极端一点 万一handlerError里面也有报错呢
+    }
+
 
 
 
