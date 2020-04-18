@@ -561,6 +561,54 @@ function add(getX,getY,cb) {
     }
 
 
+    // p223
+    {
+        function getY(x) {
+            return new Promise(function(resolve,reject){
+                setTimeout( function(){
+                    resolve( (3 * x) - 1 );
+                }, 100 );
+            });
+        }
+
+        function foo(bar,baz) {
+            var x = bar * baz; // 值1
+            return getY( x ).then( function(y){
+                // 计算后的值2
+                // 把两个值封装到容器中
+                return [x,y];
+            });
+        }
+        
+        foo(10, 20).then( function(msgs){
+            var x = msgs[0];
+            var y = msgs[1];
+            console.log( x, y ); // 200 599
+        });
+
+
+        // 优化后的处理
+        function foo(bar,baz) {
+            var x = bar * baz;
+            // 返回两个promise
+            return [
+                Promise.resolve( x ),
+                getY( x )
+                ];
+            }
+            
+        // 使用promise.all
+        Promise.all(foo( 10, 20 )).then(function(msgs){
+            var x = msgs[0];
+            var y = msgs[1];
+            console.log( x, y );
+            } );
+
+
+    }
+    
+
+
 
 
 
