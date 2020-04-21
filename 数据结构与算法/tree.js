@@ -28,6 +28,17 @@ function preOrder(root){
     preOrder(root.right);
 }
 
-
 preOrder(tree);
+
+// 中序遍历
+// root.left
+function inOrder(root){
+    if(!root) return;
+    inOrder(root.left);
+    console.log('middle order',root.val);
+    inOrder(root.right);
+}
+
+
+
 

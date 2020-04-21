@@ -603,8 +603,69 @@ function add(getX,getY,cb) {
             var y = msgs[1];
             console.log( x, y );
             } );
+    }
 
+    {
+        // 只有在你的应用只需要响应按钮点击一次的情况下 这种情况才能工作
+        let p = new Promise(function(resolve,reject){
+                click( "#mybtn", resolve );
+            });
+            
+            // 只决议一次 
+            p.then( function(evt){
+                var btnID = evt.currentTarget.id;
+                return request( "http://some.url.1/?id=" + btnID );
+                    }).then( function(text){
+                        console.log( text );
+            });
 
+            // 解决方案
+            // 1.需要在事件处理函数中定义整个Promise链(这种代码很简陋)
+            // 2.破坏了关注点与功能分离的思想(事件处理函数的定义和对事件的响应分开)
+            let p = new Promise(function(resolve,reject){
+                click( "#mybtn", function(evt){
+                    var btnID = evt.currentTarget.id;
+                    request( "http://some.url.1/?id=" + btnID )
+                    .then( function(text){
+                        console.log( text );
+                    } );
+                } );
+            });
+    }
+
+    {
+        var p = foo( 42 );
+        
+        // 这个超时相对于promise p是外部的 所以p本身还会远行
+        Promise.race( [p, timeoutPromise( 3000 )])
+        .then(
+            doSomething,
+            handleError
+        );
+        p.then( function(){
+        // 即使在超时的情况下也会发生 :(
+        });
+
+        // 侵入式地去解决 -> 操作非常风骚
+        let OK = true;
+        let p = foo( 42 );
+        Promise.race( [
+        p,
+        timeoutPromise( 3000 )
+        .catch( function(err){
+        OK = false;
+        throw err;
+        } )
+        ] )
+        .then(
+        doSomething,
+        handleError
+        );
+        p.then( function(){
+        if (OK) {
+        // 只在没有超时情况下才会发生 :)
+        }
+} );
     }
     
 
