@@ -206,11 +206,9 @@ for(let v of someThing){
 {
     var a = [1,3,4,7,9];
     var it = a[Symbol.iterator]();
-
     it.next().value;
     it.next().value;
     it.next().value;
-
 }
 
 

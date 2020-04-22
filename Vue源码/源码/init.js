@@ -87,6 +87,8 @@ function mountComponent(vm, el, dryating) {
 }
 
 // 3.0 初始化流程
+
+// Vue 3.0初始化写法
 const { createApp, reactive, onMounted } = Vue
 const state = reactive({ text: 'hello world!' })
 const App = {
@@ -100,12 +102,17 @@ const App = {
 
 createApp().mount(App, '#app')
 
+
+
 /************************ 详细代码执行部分  ********************************/
 // 源码执行部分
 // 创建并返回一个app对象
 // runtime-dom -> src -> index.ts
 
 // Step 1 : createApp
+// 输入 ->
+// 输出 ->
+
 function createApp(...args){
   const app = baseCreateAPP(...args);
   const { mount } = app;
@@ -118,6 +125,7 @@ function createApp(...args){
     container.innerHtml = '';
     return mount(container);
   };
+
   return app;
 }
 
@@ -169,6 +177,8 @@ function createRender(options){
   }
 
   // Some Other Codes
+
+  // 这里定义了render函数
   const render = (vnode,container) =>{
     if(vnode == null){
       if(container._vnode){
