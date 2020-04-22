@@ -222,5 +222,172 @@ function isIterable(obj){
 
 let r = isIterable(obj);
 
+{
+    function *someThing(){
+        var nextVal;
+
+        while(true){
+            if(nextVal == null){
+                nextVal = 1
+            }else{
+                nextVal = (3*nextVal) + 1;
+            }
+
+            yield nextVal;
+        }
+
+        // 生成器把 while true 重新带回了Javascript世界 
+    }
+    // 生成器的迭代器是一个iterable
+    let r = someThing();
+
+    for(let v of f){
+        console.log(v,'v');
+        if(v > 500){
+            break;
+        }
+    }
+
+    r.next();
+    r.next();
+    r.next();
+}
+
+
+{
+    function *something() {
+        try {
+            var nextVal;
+            while (true) {
+            if (nextVal === undefined) {
+                nextVal = 1;
+            }
+            else {
+                nextVal = (3 * nextVal) + 6;
+            }
+            yield nextVal;
+            }
+        }
+        // 清理子句
+        finally {
+            console.log( "cleaning up!" );
+        }
+    }
+
+    let it = something();
+
+    for(let v of it){
+        console.log(v,'generator value');
+        if(v > 500){
+            it.return('hello world')
+        }
+    }
+}
+
+
+// 异步迭代生成器
+{
+    function foo(x,y) {
+        ajax("http://some.url.1/?x=" + x + "&y=" + y , function(err,data){
+            if (err) {
+            // 向*main()抛出一个错误
+                it.throw( err );
+            }else {
+                // 用收到的data恢复*main()
+                it.next( data );
+            }
+        }
+        );
+    }
+
+    function *main() {
+        // 在生成器内抛出错误
+        try {
+            // 这里有一个yield关键字 
+            // yield可以同步捕获来自异步函数调用的错误
+            var text = yield foo( 11, 31 );
+            console.log( text );
+            // 其实这段代码和之前那个类似
+            // let data = ajax()
+            // console.log(data,'haha what is data');
+
+            }
+        catch (err) {
+            console.error( err );
+            }
+    }
+        
+    var it = main();
+    // 这里启动！
+    it.next();
+
+    // 在生成器内部有了看似完全同步的代码
+    // 这种表达能力是可以无限扩展的
+}
+
+{
+    function *main() {
+        var x = yield "Hello World";
+        yield x.toLowerCase(); // 引发一个异常！
+    }
+    
+    var it = main();
+    it.next().value; // Hello World
+    
+    // 我们也可以从生成器外抛出错误
+    try {
+        it.next( 42 );
+    }catch (err) {
+        console.error( err ); // TypeError
+    }
+}
+
+{
+    function *main() {
+        var x = yield "Hello World";
+        // 永远不会到达这里
+        console.log( x );
+    }
+    
+    var it = main();
+        it.next();
+        try {
+            // *main()会处理这个错误吗？看看吧！
+            it.throw( "Oops" );
+        }catch (err) {
+            // 不行，没有处理！
+            console.error( err ); // Oops
+        }
+}
+
+{
+    function foo(x,y) {
+        return request("http://some.url.1/?x=" + x + "&y=" + y);
+    }
+    
+    function *main(){
+        try {
+            var text = yield foo( 11, 31 );
+            console.log( text );
+        }catch (err) {
+            console.error( err );
+        }
+    }
+    // 先从手工执行开始
+    var it = main();
+    var p = it.next().value;
+    // 等待promise p决议
+    p.then(
+        function(text){
+            it.next( text );
+        },
+        function(err){
+            it.throw( err );
+        }
+    );
+}
+
+// 如果有一种方法可以重复(即循环)迭代控制 每次都会生成一个Promise 等其决议后再继续 并且合并地处理错误
+
 
 
