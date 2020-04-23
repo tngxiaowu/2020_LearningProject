@@ -142,7 +142,6 @@ app.createServer(app.callback()).listen(3000);
     // body的实现原理
 
     {
-
         module.exports = {
             set body(val) {
                 const original = this._body;
@@ -197,6 +196,29 @@ app.createServer(app.callback()).listen(3000);
         }
        
 
+    }
+
+
+    // 中间件的执行顺序
+
+    {
+        function *a(){
+            console.log('第一个中间件 - Before A');
+            yield b();
+            console.log('第一个中间件 After A');
+        }
+
+        function * b(){
+            console.log('处理业务逻辑');
+        }
+
+        function * hello(){
+            yield *a();
+        }
+
+        let it = hello()
+
+        it.next();
     }
 
 

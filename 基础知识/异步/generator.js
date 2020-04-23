@@ -1,4 +1,5 @@
-import { formatWithOptions } from "util";
+import { rename } from "fs";
+
 
 {
     let x = 1;
@@ -388,6 +389,96 @@ let r = isIterable(obj);
 }
 
 // 如果有一种方法可以重复(即循环)迭代控制 每次都会生成一个Promise 等其决议后再继续 并且合并地处理错误
+
+{
+    // 如何实现一个异步迭代生成器 -> 本质上 这也是async+await的一个实现
+    function run( gen ){
+        // 首先截取参数(从第二个参数开始)
+        var args = [].slice.call( arguments,1 ),it;
+        // 启动生成器
+        it = gen.apply(this.args);
+
+        return Promise.resolve().then(function handleNext(value){
+            var next = it.next(value); // 获取迭代器值
+
+            return ( function handleResult(next){
+                if(next.done){
+                    return next.value; // 返回最后的值
+                }else{
+                    return Promise.resolve(next.value).then( handleNext,function handleErr(err){
+                        return Promise.resolve(it.throw(err)).then(handleResult)
+                    } )
+                }
+            })(next)
+        })
+    }
+
+    // 非常简单 使用这段代码
+    function *main(){
+    }
+
+    run(main);
+}
+
+
+// 多并发的场景下
+{
+    function *foo(){
+        var r1 = yield request( "http://some.url.1" );
+        var r2 = yield request( "http://some.url.2" );
+        var r3 = yield request(
+        "http://some.url.3/?v=" + r1 + "," + r2
+        );
+        console.log( r3 );
+    }
+
+    // 该代码并非最优代码 
+    // 原因在于 这些代码是按照顺序依次执行的
+}
+
+
+// 一个优化版的代码
+{
+    function *foo() {
+        // 让两个请求"并行"
+        var p1 = request( "http://some.url.1" );
+        var p2 = request( "http://some.url.2" );
+        // 等待两个promise都决议
+        var r1 = yield p1;
+        var r2 = yield p2;
+        var r3 = yield request(
+        "http://some.url.3/?v=" + r1 + "," + r2
+        );
+        console.log( r3 );
+        }
+        // 使用前面定义的工具run(..)
+        run( foo );
+}
+
+
+// 基于Promise的更简洁的方案
+{
+    
+    function bar(url1,url2) {
+        return Promise.all( [
+            request( url1 ),
+            request( url2 )
+        ]);
+    }
+    function *foo() {
+        // 隐藏bar(..)内部基于Promise的并发细节
+        var results = yield bar(
+            "http://some.url.1",
+            "http://some.url.2"
+        );
+        var r1 = results[0];
+        var r2 = results[1];
+        var r3 = yield request("http://some.url.3/?v=" + r1 + "," + r2);
+        console.log( r3 );
+    }
+    // 使用前面定义的工具run(..)
+    run( foo );
+}
 
 
 

@@ -29,12 +29,24 @@ function isPlaindrome(str:String){
     return true;
 }
 
-// 回文字符串的对称特性
+// 回文字符串的对称特性(利用指针特性)
+// a  c  d a
 function isPlaindromeIfDeleteOne(str){
-    let l = str.length, m = Math.floor(l/2);
-
-
+    let l = str.length, 
+        m = Math.floor(l/2);
+    for(let i = 0 ; i < m ; i++){
+        if(str[i]  !== str[l-i-1]){
+           let isPlain = str[i+1] === str[l-i-1] || str[i] === str[l-i];
+           if(!isPlain){
+            return false;
+            break;
+           }
+        }
+    }
+    return true;
 }
+
+isPlaindromeIfDeleteOne('acdea');
 
 
 
