@@ -112,7 +112,6 @@ createApp().mount(App, '#app')
 // Step 1 : createApp
 // 输入 ->
 // 输出 ->
-
 function createApp(...args){
   const app = baseCreateAPP(...args);
   const { mount } = app;
