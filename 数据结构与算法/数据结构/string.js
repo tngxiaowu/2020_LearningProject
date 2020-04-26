@@ -48,5 +48,52 @@ function isPlaindromeIfDeleteOne(str){
 
 isPlaindromeIfDeleteOne('acdea');
 
+// 
+class wordCollection{
+    constructor(){
+        // 用Map比Set好的一点是 查找效率会更高点(字典数据结构)
+        this.wordList = new Map();
+    }
+
+    addWord(word){
+        let l = word.length ,r = this.wordList.get(l);
+        if( r != null ){
+            r.push(world)
+            this.wordList.set(l,r);
+        }else{
+            this.wordList.set(l,[ word ]);
+        }
+    }
+
+    search(word){
+        let l = word.length,r = this.wordList.get(l);
+        if(  r == null){
+            return false;
+        }else{
+            if(word.indexOf('.') > -1){
+                const reg = new RegExp(word);
+                return r.some( item => {
+                    return reg.test(item)
+                } )
+            }else{
+                return r.includes(word);
+            }
+        }
+        
+    }   
+}
+
+// 正则表达式更进一步——字符串与数字之间的转换问题
+function atio(str){
+    const reg = /s/;
+
+
+    // 判断+号或减号
+    // 去除空格后
+    let plusOrMinusReg = /^(+|-)/;
+
+}
+
+
 
 
