@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Chapter 8 函子</title>
+</head>
+
+<body>
+  <script>
+    //8.1 什么是函子
+    {
+      //函子是一个对象 它实现了map的功能 在遍历每个值时生成一个新的对象
+
+      let Container = function (val) {
+        this.value = val;
+      }
+
+      Container.of = function (val) {
+        return new Container(val);
+      }
+
+      console.log('miss new', Container.of(3));
+
+      Container.prototype.map = function (fn) {
+        return Container.of(fn(this.value));
+      }
+
+      let double = x => x * 2;
+
+      console.log('double', Container.of(5).map(double).map(double).map(double));
+    }
+
+    // 8.2 maybe函子 + 8.3 实战
+    {
+      let Maybe = function (val) {
+        this.value = val;
+      }
+
+      Maybe.of = function (val) {
+        return new Maybe(val);
+      }
+
+      Maybe.prototype.isNothing = function () {
+        return (this.value === null || this.value === undefined);
+      }
+
+      Maybe.prototype.map = function (fn) {
+        return this.isNothing() ? Maybe.of(null) : Maybe.of(fn(this.value));
+      }
+
+      let string = Maybe.of('hello').map(str => str.toUpperCase());
+
+      console.log('uStirng', string);
+    }
+
+    //  8.4 实现either函子
+    {
+      let Some = function (val) {
+        this.value = val;
+      }
+
+      Some.of = function (val) {
+        return new Some(val);
+      }
+
+      Some.prototype.map = function (fn) {
+        return Some.of(fn(this.value));
+      }
+
+      let Nothing = function(val){
+        this.value = val;
+      }
+
+      Nothing.of = function(val){
+        return new Nothing(val);
+      }
+
+      Nothing.prototype.map = function(){
+        return this;
+      }
+
+      //定义ethier
+      const either = {
+        Some,
+        Nothing
+      }
+
+
+    }
+  </script>
+
+</body>
+
+</html>

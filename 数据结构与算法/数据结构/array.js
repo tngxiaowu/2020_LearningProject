@@ -40,18 +40,27 @@ console.log(search(nums,13),'Result');
 
 // 强大的双指针法 -> 合并两个有序数组
 // 解决方案 -> 双指针法
-const enum1 = [1,3,5,7];
-const enmu2 = [2,4,6,8];
+const enum1 = [1,3,5,7]; // 按照顺序排列
+const enmu2 = [2,4,6,6]; 
 
-
+// 思路是 选定一个数组 两数组的最后开始比较 
 function mergeTwoArray(n1,n2){
     const l1 = n1.length, l2 = n2.length;
+    while( l1 && l2 ){
+        if(n1[l1] <= n2[l2]){
+            n1.splice(n2[l2],l1-1,1); // 插到该元素后面
+            l2--;
+        }else{
+            l1--;
+        }
+    }
 
-    if(n1[l1] <= n2[l2]){
-        n1.push(n2[l2])
-        l2--;
-    }else{
-    
+    if(l1 === 0 && l2 >0){
+        // 将剩余的元素合并到数组后
+    }
+
+    if(l1 > 0 && l2 === 0){
+        // 将剩余的元素合并到数组开头
     }
 
 }

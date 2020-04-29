@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Chapter 7 组合与管道</title>
+</head>
+
+<body>
+  <script>
+    // 7.1 组合的概念
+    {
+      //了解理念：每个程序的输出应该是另一个尚未可知的程序的输入
+      // 案例 unix中的管道操作符
+      // 组合函数的优势在于无需创建新的函数就可以通过基础函数解决问题
+
+    }
+
+    // 7.2 compose函数
+    {
+      //一个非常简单的compose函数
+      const compose = (a, b) => (c) => a(b(c));
+
+      // 需求1: 对一个数字进行四舍五入
+      //常规操作
+      let data = parseFloat('4.1');
+      let number = Math.round(data); // 输出4
+
+      //使用composer函数
+      const parseNumberIntoRound = compose(Math.round, parseFloat);
+      parseNumberIntoRound('4.1'); //输出4
+
+      //需求2:计算字符串中英文的个数
+      let count = ary => ary.length;
+      let splitIntoWords = str => str.split(' ');
+
+      let countWords = compose(count, splitIntoWords);
+
+      countWords('hello world taotao'); //输出3
+
+    }
+
+    // 7.3 组合多个函数
+    {
+      //组合多个函数的compose函数
+      const compose = (...fn) => value => reduec(fn.reverse(), (acc, fn) => fn(acc), value);
+
+      //拿上一节的需求2作为例子进行分析
+      let count = ary => ary.length;
+      let splitIntoWords = str => str.split(' ');
+
+      // fn.reverse() => [splitIntoWords,count];
+      // (acc, fn) => fn(acc) 执行函数
+      // value =>初始值 
+    }
+
+    // 7.4 管道/序列
+    {
+      const compose = (...fn) => value => reduec(fn, (acc, fn) => fn(acc), value);
+
+    }
+
+    // 7.5 组合的优势
+    {
+      //函数式组合满足结合律也就是如下表达式
+      const compose = (...fn) => value => reduec(fn, (acc, fn) => fn(acc), value);
+
+      compose(compose(f, g), h) === compose(f, compose(g, h))
+
+      //可以把函数组合到我们各自所需的函数中
+
+      // 对compose函数进行调试
+      const identify = it => {
+        console.log(it);
+        return it;
+      }
+
+    }
+  </script>
+
+</body>
+
+</html>

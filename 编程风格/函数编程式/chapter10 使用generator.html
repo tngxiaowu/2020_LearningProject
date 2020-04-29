@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Chapter 10 generator</title>
+</head>
+
+<body>
+  <script>
+    //10.2 generator基础
+    {
+      function* gen() {
+        return 'first generator';
+      }
+
+      //generator类似构造函数 需要通过next方法对其进行调值
+      console.log(gen().next());
+    }
+
+    {
+      //这个函数需要理解一下
+      function* sayFullName() {
+        var firstName = yield;
+        var secondName = yield;
+        console.log(`${firstName}${secondName}`);
+      }
+    }
+
+    //解决真实的generator函数
+    {
+      let getDateOne = fn => {
+        setTimeout(fn, 2000)
+      }
+
+      let getDateTwo = fn => {
+        setTimeout(fn, 3000)
+      }
+
+      // getDateOne(() => console.log('getDateOne received'));
+      // getDateTwo(() => console.log('getDateTwo received'));
+
+      // 上述代码异步嵌套 不太优雅
+    }
+
+    {
+      let getDateOne = () => {
+        setTimeout(function () {
+          generator.next('go on first');
+        }, 1000)
+      };
+
+      let getDateTwo = () => {
+        setTimeout(function () {
+          generator.next('go on second');
+        }, 1000)
+      };
+
+      let generator;
+
+      generator = main();
+
+      function* main() {
+        let dateOne = yield getDateOne();
+        let dateTwo = yield getDateTwo();
+        console.log(dateOne, dateTwo);
+      };
+
+      generator.next();
+    }
+
+    //实践generator 使用genertor函数实现异步编程
+    {
+      let https = require('https');
+      let request = require('request');
+
+      function getRequestAsync(url) {
+        httpRequest(url, (response) => {
+          generator.next(response);
+        })
+      }
+
+      function* main() {
+        let getFirst = yield request('http://link1');
+        let getSecond = yield request('http://link2');
+      }
+
+
+    }
+  </script>
+
+</body>
+
+</html>

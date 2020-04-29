@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Chapter 9 Moand</title>
+</head>
+
+<body>
+  <script>
+    //8.1 Monad的概念
+    {
+      // search接口
+
+      // let request = require('async-request'); //引入依赖
+
+      let searchReddit = searchText => {
+        let response;
+        try {
+          response = JSON.parse(request('GET', 'http://www.baidu.com/search?q=' + encodeURI(searchText)).getBody(
+            'utf8'))
+        } catch (err) {
+          response = {
+            message: 'Something Went Wrong',
+            errCode: err['statusCode']
+          }
+        }
+
+        return response;
+      }
+
+      //getComent接口
+      let getComment = link => {
+        let response;
+        try {
+          response = JSON.parse(request('GET', 'http://www.baidu.com/search?q=' + link).getBody(
+            'utf8'))
+        } catch (err) {
+          response = {
+            message: 'Something Went Wrong',
+            errCode: err['statusCode']
+          }
+        }
+        return response;
+      }
+
+
+      let mergeViaMaybe = searchText => {
+        let redditMayBe = Maybe.of(searchReddit(searchText));
+        let ans = redditMayBe.map(arr => arr['children'])
+          .map(arr => arr['data'])
+          .map(arr => arrayUtils.map((arr, x) => {
+            return {
+              title: x['data'].title
+            }
+          }))
+          .map(arr => arrayUtils.map((arr, x) => {
+            return {
+              title: Mavbe.of(getComment(x.title))
+            }
+          }))
+      }
+
+      //上述代码的缺点非常明显 map嵌套太深
+
+      // 9.3 通过join去解决问题
+
+      //定义一个join函数
+
+      let Maybe = function (val) {
+        this.value = val;
+      }
+
+      Maybe.of = function (val) {
+        return new Maybe(val);
+      }
+
+      Maybe.prototype.isNothing = function () {
+        return (this.value === null || this.value === undefined);
+      }
+
+      Maybe.prototype.map = function (fn) {
+        return this.isNothing() ? Maybe.of(null) : Maybe.of(fn(this.value));
+      }
+
+      Maybe.prototype.join = function () {
+        return this.isNothing() ? Maybe.of(null) : this.value;
+      }
+
+      let joinExample = Maybe.of(Maybe.of(5));
+
+      console.log(joinExample.join().map(x => x + 4));
+
+      //进一步优化 chain函数
+      Maybe.prototype.chain = function(fn){
+        return this.map(fn).join();
+      }
+    }
+  </script>
+
+</body>
+
+</html>

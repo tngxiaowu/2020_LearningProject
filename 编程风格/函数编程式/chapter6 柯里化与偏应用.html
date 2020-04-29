@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Chapter 6 柯里化与偏应用</title>
+</head>
+
+<body>
+  <script>
+    {
+      //非柯里化函数
+      const add = (x, y) => x + y;
+
+      // 柯里化函数版本
+
+      // 将二元函数转换成颗粒函数
+      const curry = fn => firstArg => secondArg => fn(firstArg, secondArg);
+
+      const addCurried = curry(add); // 输出结果为 addCurried = x => y => x + y
+
+      console.log('addCurried', addCurried(2)(2));
+
+    }
+
+    // 6.3 柯里化实战
+    {
+      //case 1 在数组内容中查找数字
+      const curry = fn => firstArg => secondArg => fn(firstArg, secondArg);
+
+      let match = curry((expr, str) => {
+        return str.match(expr);
+      }) //输出 let match = str => expr => str.match(expr);
+
+      let hasNumber = match(/[0,9]+/); // let hasNumber = str =>  str.match(/[0,9]+/g);
+
+      let filter = curry((f, ary) => {
+        return ary.filter(f);
+      }) // 输出 let filter = f => ary => ary.flter(f);
+
+      let filterNumberInArray = filter(hasNumber); // 输出 let filterNumberInArray = ary => ary.filter( hasNumber )
+
+      // console.log(filterNumberInArray(['JS',1]))
+
+      //case 2 求数组的平方
+      let map = curry((f, ary) => ary.map(f)); // 输出 let map = f => ary => ary.map(f);
+
+      let squareAll = map(x => x * x); //输出 let squareAll = ary => ary.map( x => x*x );
+
+      console.log(squareAll([1, 2, 3]));
+    }
+
+    // 6.4 数据流
+    {
+      //1.偏应用
+
+      // setTimeout(() => { console.log('do x task')},1000);
+      // setTimeout(() => { console.log('do y task')},1000);
+
+      const setTimeoutWarpper = (time, fn) => {
+        setTimeout(fn, time);
+      };
+
+      const curry = fn => firstArg => secondArg => fn(firstArg, secondArg);
+
+      const curriedSetTimeoutWarpper = curry(setTimeoutWarpper)(10000); //需要通过通过一个中间函数去实现；
+
+      curriedSetTimeoutWarpper(console.log('do a task'));
+      curriedSetTimeoutWarpper(console.log('do b task'));
+
+
+      console.log('==============我是华丽的分割线================');
+
+      //实现一个偏函数
+      const partial = (fn, ...partialArgs) => {
+        let args = partialArgs;
+        return function (...fullArguments) {
+          let arg = 0;
+          for (let i = 0; i < args.length && arg < fullArguments; i++) {
+            if (args[i] === undefined) {
+              args[i] = fullArguments[arg++];
+            }
+
+          }
+          return fn.apply(null, args);
+        }
+      }
+
+      let partialedSetTimeout = partial(setTimeout, undefined, 10);
+
+      partialedSetTimeout(() => console.log('do p task'));
+
+
+
+    }
+  </script>
+
+</body>
+
+</html>

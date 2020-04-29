@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .mask-container{
+            height: 100%;
+            width: 600px;
+
+        }
+
+        .mask-cover{
+            width: 1200px;
+            height: 900px;
+            background-color: black;
+            opacity: .3;
+            position: fixed;
+            z-index: 99px;
+        }
+
+        .mask-content{
+            width: 1200px;
+            height: 900px;
+            opacity: .5;
+            position: fixed;
+            z-index: 100;
+
+        }
+    </style>
+</head>
+<body>
+    <div id='content'>
+        hello
+    </div>
+
+    <div  class="mask-container">
+        <div class="mask-cover"> </div>
+        <div class="mask-content"> 
+
+            hello world
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Chapter 5 数组的函数式编程</title>
+</head>
+
+<body>
+  <script>
+    {
+      // map函数
+      const map = (array, fn) => {
+        let result = [];
+
+        for (value of array)
+          result.push(fn(value))
+
+        return result;
+      }
+
+      map([1, 2, 3], (x) => x * x)
+
+      const arrayUntils = {
+        map
+      }
+    }
+
+    {
+      //filter函数
+      const map = (array, fn) => {
+        let result = [];
+
+        for (value of array)
+          fn(value) ? result.push(value) : undefined
+
+        return result;
+      }
+    }
+
+    {
+      //连续操作
+
+      map(filter(apressBooks, () => {
+        // do something
+      }), () => {
+        // do something
+      })
+
+    }
+
+    {
+      //concatAll函数 将嵌套数组转化为单一数组
+      const concatAll = (array, fn) => {
+        let results = [];
+        for (const value of array)
+          results.push.apply(results, value);
+
+        return results;
+      }
+
+
+    }
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Chapter 4 闭包</title>
+</head>
+
+<body>
+  <script>
+    {
+      function outter() {
+        function inner() {
+          let a = 5;
+          console.log(a);
+        }
+        inner();
+      }
+
+      outter();
+
+    }
+
+    {
+      let global = 'glpbal';
+
+      function outter() {
+        let out = 6;
+
+        function inner() {
+          let a = 5;
+          console.log(out);
+        }
+        inner();
+      }
+
+      outter();
+
+    }
+
+    {
+      let global = 'glpbal';
+
+      function outter() {
+        function inner() {
+          let a = 5;
+          console.log(global);
+        }
+        inner();
+      }
+
+      outter();
+
+    }
+
+    // 4.1.2 记住闭包生成的位置
+    {
+      let fn = (arg) => {
+        let inner = 'Visible';
+        let innerFn = () => {
+          console.log('inner', inner);
+          console.log('arg', arg);
+        }
+        return innerFn;
+      }
+
+      let closeFn = fn(5);
+      closeFn();
+    }
+
+    // 4.2 真实的高阶函数(续);
+    {
+      const tap = (value) => (fn) => (typeof fn == 'function' && fn(value), console.log(value))
+
+      tap('fun')((it) => {
+        console.log(`value is ${it}`)
+      });
+    }
+
+    // 4.2.2 unary函数
+    {
+      const unary = (fn) => fn.length === 1 ? fn : (arg) => fn(arg);
+    }
+
+    // 4.2.3 once函数
+    {
+      const once = (fn) => {
+        let done = false;
+        return function () {
+          return done ? undefined : ((done = true), fn.apply(this, arguments))
+        }
+      }
+
+      let doPayment = once(() => {
+        console.log('payMent is done')
+      });
+
+      doPayment();
+      doPayment();
+      doPayment();
+    }
+  </script>
+
+</body>
+
+</html>
