@@ -35,9 +35,6 @@ var search =  (arr , target) => {
 console.log(search(nums,13),'Result'); 
 
 
-
-
-
 // 强大的双指针法 -> 合并两个有序数组
 // 解决方案 -> 双指针法
 const enum1 = [1,3,5,7]; // 按照顺序排列
@@ -65,6 +62,24 @@ function mergeTwoArray(n1,n2){
 
 }
 
-// 三数求和
+// 三数求和 
+// 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有满足条件且不重复的三元组。
+// 所有的求和问题 -> 转换为求差问题 a + b = -c;
+
+// 双指针法用在设计求和、比大小类的数组时 大前提是该数组必须有序
+const Enums = [ -1, -2, 3]; // 排序基础
+
+
+threeNumsPlus(arr){
+    let l = arr.length;
+    for(let i = 0; i < l; i++){
+        let temp = arr[i], rest = arr.slice(i+1,l);
+
+
+    }
+}
+
+
+
 
 
