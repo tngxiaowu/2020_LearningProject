@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #outer{
+            width: 100px;
+            height: 100px;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+        }
+
+        #inner{
+            width: 50px;
+            height: 50px;
+            background-color: orange;
+        }
+    </style>
+</head>
+<body>
+    <div id="outer">
+        <div id="inner"></div>
+    </div>
+    <script>
+        // 异步执行顺序分析
+        // 分析有多少宏任务(由宿主发起的任务  -> 宏任务)
+        // 一个宏任务下有多少微任务 -> 执行所属微任务
+        // 宏任务执行顺序
+        // 确定整个顺序
+
+        // script calling begin
+        const inner = document.getElementById("inner");
+        const outer = document.getElementById("outer");
+
+        // 监听 outer 的属性变化 -> 
+        // MutationObserver也是微任务
+        new MutationObserver(() => 
+            console.log("mutate outer"))
+        .observe(outer, { attributes: true });
+
+        // 处理 click 事件。
+        function onClick(){
+            console.log("click");
+            setTimeout( function demo1 () {console.log("timeout"), 100}); // 宏任务 -> 丢到宏任务队列
+            Promise.resolve().then(function demo2 () {console.log("promise")}); // 微任务1 promise
+            outer.setAttribute("data-mutation", Math.random()); // 微任务2 又触发了一次微任务 
+        }
+
+        // 监听 click 事件。
+        inner.addEventListener("click", onClick);  
+        outer.addEventListener("click", onClick);  
+
+        inner.click(); // 内部执行 当前是否有执行上下文 
+        // script calling end 
+
+        // Queue => [onClick(inner),onClick(outter), onMutationObserver ]
+
+        // 
+    </script>
+
+    <!-- <script>
+        function sleep(duration) {
+                return new Promise(function(resolve, reject) {
+                    console.log("b"); // 产生一个微任务
+                    setTimeout(resolve,duration); // 产生一个宏任务
+            })
+        }
+        console.log("a");
+        sleep(5000).then(()=>console.log("c"));
+
+    </script> -->
+</body>
+</html>
