@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #outer {
+            width: 200px;
+            height: 200px;
+            background: green;
+        }
+
+        #inner {
+            width: 100px;
+            height: 100px;
+            background: yellow;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div id='outer'>
+            <div id='inner'>
+
+            </div>
+        </div>
+    </div>
+
+
+    .cls~* { border:solid 1px green; }
+
+    <div>
+        <span>1<span>
+        <span class=cls>
+            2
+        <span>
+        <span>3
+        <span>4</span>
+        <span>
+        <span>5</span>
+    </div>
+
+
+
+    <script>
+        // const inner = document.getElementById("inner"); // 同步任务-脚本执行
+        // const outer = document.getElementById("outer"); // 同步任务-脚本执行
+        // 监听 outer 的属性变化 -> MircoTask
+        // new MutationObserver(() => console.log("mutate outer"))
+        //     .observe(outer, {
+        //         attributes: true
+        //     });
+        // 处理 click 事件。
+        // 同步任务-脚本执行
+        // function onClick() {
+        //     console.log("click"); // 同步执行
+        //     setTimeout(() => console.log("timeout"), 0); // 压到宏观队列
+        //     Promise.resolve().then(() => console.log("promise")); // 压到微观队列
+        //     outer.setAttribute("data-mutation", Math.random()); // 同步代码执行 监听DOM操作发生变化
+        // }
+        // 监听 click 事件。
+        // 同步任务-脚本执行 task -> 
+        // inner.addEventListener("click", onClick);
+        // outer.addEventListener("click", onClick);
+        // inner.click();
+
+
+        function callback1() {
+            console.log(1);
+            setTimeout(callback2, 0);
+        }
+
+        function callback2() {
+            console.log(2);
+        }
+
+        setTimeout(callback1, 0);
+    </script>
+
+
+
+</body>
+
+</html>
