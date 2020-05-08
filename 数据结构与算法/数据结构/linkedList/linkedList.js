@@ -1,12 +1,19 @@
 let head = Symbol('head');
 
 // 链表中的某个节点
+// 单链表
 class Node{
     constructor(element){
         this.element = element;
         this.next = null;
     }
 }
+
+// 循环链表
+
+// 双向链表
+
+// 双向循环链表
 
 // 整个链表
 class LinkedList{
