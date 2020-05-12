@@ -114,20 +114,71 @@ let linkedListTwo = {
     next:{ val:3,next: { val:4,next:null}}
  }
  
- // 使用双指针法
- function mergeLinkedLisr(l1,l2){
-     let v1,v2;
-     while(l1.val && l2.val){
-         v1 = l1.val;
-         v2 = l2.val;
 
-        if(v1 <= v2){
+class ListNode{
+    constructor(val){
+        this.val = val;
+        this.next = null;
+    }
+}
 
+
+ // 有序列表的合并
+function mergeLinkedLists(l1,l2){
+    // 定义头结点?
+    let head = new ListNode();
+    let cur = head;
+
+    while( l1 && l2 ){
+        if(l1.val <= l2.val ){
+            cur.next = l1;
+            l1 = l1.next;
+            
         }else{
-
+            cur.next = l2;
+            l2 = l2.next;
         }
-     }
+        cur = cur.next;
+    }
+
+    // 指针长度不一的情况
+    cur.next = l1 != null ? l1 : l2;
+
+     
  }
+
+
+ const mergeTwoLists = function(l1, l2) {
+    // 定义头结点，确保链表可以被访问到
+    let head = new ListNode()
+    // cur 这里就是咱们那根“针”
+    let cur = head
+    // “针”开始在 l1 和 l2 间穿梭了
+    while(l1 && l2) {
+        // 如果 l1 的结点值较小
+        if(l1.val<=l2.val) {
+            // 先串起 l1 的结点
+            cur.next = l1
+            // l1 指针向前一步
+            l1 = l1.next
+        } else {
+            // l2 较小时，串起 l2 结点
+            cur.next = l2
+            // l2 向前一步
+            l2 = l2.next
+        }
+        
+        // “针”在串起一个结点后，也会往前一步
+        cur = cur.next 
+  
+    }
+    
+    // 处理链表不等长的情况
+    cur.next = l1!==null?l1:l2
+    // 返回起始结点
+    return head.next
+  };
+ 
 
 
 
