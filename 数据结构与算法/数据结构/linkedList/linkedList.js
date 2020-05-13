@@ -122,31 +122,23 @@ class ListNode{
     }
 }
 
-
  // 有序列表的合并
 function mergeLinkedLists(l1,l2){
-    // 定义头结点?
-    let head = new ListNode();
+    let head = new ListNode();  // 定义头结点
     let cur = head;
-
     while( l1 && l2 ){
         if(l1.val <= l2.val ){
             cur.next = l1;
             l1 = l1.next;
-            
         }else{
             cur.next = l2;
             l2 = l2.next;
         }
-        cur = cur.next;
+        cur = cur.next;// 指针向后移
     }
-
     // 指针长度不一的情况
     cur.next = l1 != null ? l1 : l2;
-
-     
  }
-
 
  const mergeTwoLists = function(l1, l2) {
     // 定义头结点，确保链表可以被访问到
@@ -178,6 +170,23 @@ function mergeLinkedLists(l1,l2){
     // 返回起始结点
     return head.next
   };
+
+
+  // 删除有序列表中的重复元素
+  // 思路:
+  // 类似使用冒泡排序的方式 两两比较 发现相同的 就指向下一个节点
+  function deleteSameNode(LinkedList){
+    let cur = LinkedList; // 设定初始指针
+    while(cur && cur.next){
+        if(cur.val === cur.next.val){
+            cur.next = cur.next.next; // 跳过一个节点
+        }else{
+            cur = cur.next; // 下一个节点
+        }
+    }
+    return LinkedList;
+  }
+
  
 
 
