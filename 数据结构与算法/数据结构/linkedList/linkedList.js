@@ -187,6 +187,37 @@ function mergeLinkedLists(l1,l2){
     return LinkedList;
   }
 
+
+// 删除链表中倒数第n个节点
+// 示例: 1 -> 2 -> 3 -> 4 -> 5   n = 2
+let linkedList = {
+    val:1,
+    next:{ 
+        val:2,
+        next:{ 
+            val:3,
+            next:{  
+                val:4, 
+                next:{  
+                    val:5,
+                    next:null
+                    } 
+                } 
+            } 
+        }
+    }
+
+// 计算长度 然后根据长度去计算它所在的位置
+function calculateLinkedListLength(l){
+    let cur = l;
+    while( cur.next != null ){
+
+    }
+}
+
+// 快慢指针方法 利用快慢指针 之间差值 
+// 如果倒数第几个的话 那么我就设置快慢指针之间的差值为n即可 
+// 非常牛逼的思路
  
 
 
