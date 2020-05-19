@@ -187,7 +187,14 @@ function mergeLinkedLists(l1,l2){
     return LinkedList;
   }
 
+  // 删除问题的延伸:删除列表中所有的重复节点 
+  // 我的思路 : 维护一个重复值的map列表 
+  // 比如说 1 -> 2 -> 2 -> 2 -> 3 -> 3 -> 4  => 1 -> 4
+  // 经典的链表题中遇到的问题: 链表的第一个节点 因为没有前驱节点 导致我们面对它无从下手
+  // dummy节点 -> 人为制造出来的第一个节点 
+  function deleteAllSameNode(LinkedList){
 
+  }
 // 删除链表中倒数第n个节点
 // 示例: 1 -> 2 -> 3 -> 4 -> 5   n = 2
 let linkedList = {

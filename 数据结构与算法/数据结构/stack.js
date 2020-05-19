@@ -13,3 +13,30 @@ class Stack {
     this.stack.push(item);
   }
 }
+
+
+// 栈的问题 -> 有效括号
+function isActiveStr(str){
+  // str = str.split('');
+  let startStack = [],endStack = [];
+
+  for(let tag of str){
+    if(isStartTag(tag)){
+      startStack.push(tag);
+    }else if(isEndTag(tag)){
+      endStack.push(tag);
+    }
+  }
+
+  let l = startStack.length;
+  
+
+}
+
+function isStartTag(tag){
+  return tag === '(' || tag === '{' || tag === '[' 
+}
+
+function isEndTag(tag){
+  return  tag === ')' || tag === '}'  || tag === ']'
+}
