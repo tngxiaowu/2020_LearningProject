@@ -16,6 +16,7 @@ class Stack {
 
 
 // 栈的问题 -> 有效括号
+// ({[]}) ->  ({[     ]}) -> 
 function isActiveStr(str){
   // str = str.split('');
   let startStack = [],endStack = [];
@@ -30,6 +31,9 @@ function isActiveStr(str){
 
   let l = startStack.length;
   
+  while(l--){
+    if(startStack[l-1])
+  }
 
 }
 
