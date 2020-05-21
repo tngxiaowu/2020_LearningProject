@@ -14,6 +14,14 @@ class Stack {
   }
 }
 
+// 栈的问题 -> 每日温度问题
+// 栈结构可以避免不必要的重复操作
+const temperatures = [73, 74, 75, 71, 69, 72, 76, 73];
+function getStack(temperatures){
+
+}
+
+
 
 // 栈的问题 -> 有效括号
 // ({[]}) ->  ({[     ]}) -> 
@@ -43,4 +51,69 @@ function isStartTag(tag){
 
 function isEndTag(tag){
   return  tag === ')' || tag === '}'  || tag === ']'
+}
+// 栈问题 -> 
+
+
+// 栈的问题 -> 最小栈
+// 空间换时间
+class miniStack {
+  constructor(){
+    this.stack = [];
+    this.stack2 = []; // 辅助栈 -> 维护一个从大小的栈
+  }
+
+  push(item){
+    this.stack.push(item);
+    if(!this.stack2.length || this.stack2[this.stack2.length-1] >= item){
+      this.stack2.push(item);
+    }
+  }
+
+  pop(){
+    if(this.stack.pop === this.stack2[this.stack2.length -1]){
+      this.stack2.pop();
+    }
+    
+  }
+  // 获取栈顶元素
+  top(){
+    return this.stack[this.stack.length - 1];
+  }
+
+  getMin(){
+    return this.stack2[this.stack2.length -1];
+  }
+}
+
+
+// 一种比较运算复杂的方法
+class miniStackTwo{
+  constructor(){
+    this.stack = [];
+  }
+
+  push(item){
+    this.stack.push(item)
+  }
+
+  pop(){
+    this.stack.pop();
+  }
+
+  top(){
+    return this.stack[this.stack.length - 1];
+  }
+
+  getMin(){
+    const { stack } = this;
+    let miniValue = Infinity;
+
+    for(let item of stack){
+      if(miniValue < item){
+        miniValue = item;
+      }
+    }
+    return miniValue;
+  }
 }
