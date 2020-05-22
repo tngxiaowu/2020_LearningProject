@@ -53,7 +53,18 @@ function isEndTag(tag){
   return  tag === ')' || tag === '}'  || tag === ']'
 }
 // 栈问题 -> 
+// 相关技巧: 维护一个递减栈
+const dailyTemperatures = ( T ) =>{
+  const l = T.length;
+  const stack = [];
+  const res = (new Array(l)).fill(0);
 
+  for(let i = 0; i < l; i++){
+    while(stack.length && T[i] > T[stack[stack.length - 1]]){
+      
+    }
+  }
+}
 
 // 栈的问题 -> 最小栈
 // 空间换时间
