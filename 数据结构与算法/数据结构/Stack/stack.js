@@ -1,18 +1,30 @@
 // 用数组模拟栈(如何实现)
-class Stack {
-  constructor() {
-    this.stack = [];
-  }
-  pop() {
-    let l = this.stack.length;
-    if (l >= 1) {
-      this.stack.length = l - 1;
+{
+  class Stack {
+    constructor() {
+      this.stack = [];
+    }
+     // 栈顶添加一个元素
+     push(item) {
+      this.stack.push(item);
+    }
+    // 栈顶删除一个元素
+    pop() {
+      let l = this.stack.length;
+      if (l >= 1) {
+        this.stack.length = l - 1;
+      }
+    }
+    // 计算栈的长度
+    size(){
+      return this.stack.length;
+    }
+    isEmpty(){
+      return this.stack.length === 0;
     }
   }
-  add(item) {
-    this.stack.push(item);
-  }
 }
+
 
 // 栈的问题 -> 每日温度问题
 // 栈结构可以避免不必要的重复操作
@@ -21,37 +33,42 @@ function getStack(temperatures){
 
 }
 
-
-
 // 栈的问题 -> 有效括号
-// ({[]}) ->  ({[     ]}) -> 
-function isActiveStr(str){
-  // str = str.split('');
-  let startStack = [],endStack = [];
-
-  for(let tag of str){
-    if(isStartTag(tag)){
-      startStack.push(tag);
-    }else if(isEndTag(tag)){
-      endStack.push(tag);
+// ({[]}) ->  ({[     ]}) 
+{
+  function isActiveStr(str){
+    // str = str.split('');
+    let startStack = [],endStack = [];
+  
+    for(let tag of str){
+      if(isStartTag(tag)){
+        startStack.push(tag);
+      }else if(isEndTag(tag)){
+        endStack.push(tag);
+      }
+    }
+  
+    let l = startStack.length;
+    
+    while(l--){
+      if(startStack[l-1])
     }
   }
 
-  let l = startStack.length;
+  function isStartTag(tag){
+    return tag === '(' || tag === '{' || tag === '[' 
+  }
   
-  while(l--){
-    if(startStack[l-1])
+  function isEndTag(tag){
+    return  tag === ')' || tag === '}'  || tag === ']'
   }
 
 }
 
-function isStartTag(tag){
-  return tag === '(' || tag === '{' || tag === '[' 
-}
 
-function isEndTag(tag){
-  return  tag === ')' || tag === '}'  || tag === ']'
-}
+
+
+
 // 栈问题 -> 
 // 相关技巧: 维护一个递减栈
 const dailyTemperatures = ( T ) =>{
