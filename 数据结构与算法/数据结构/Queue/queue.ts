@@ -37,56 +37,6 @@ public class ArrayQueue {
     }
 
 
-    // 使用栈去模仿队列
-    // 栈和队列的区别: 栈: 先进后厨 队列: 先进先出
-    // 让栈模拟先进先出 就是使用一个逆栈
-    {   
-        class Stack {
-            constructor() {
-                this.stack = [];
-            }
-            // 栈顶添加一个元素
-            push(item) {
-                this.stack.push(item);
-            }
-            // 栈顶删除一个元素
-            pop() {
-                let l = this.stack.length;
-                if (l >= 1) {
-                    this.stack.length = l - 1;
-                }
-            }
-            // 计算栈的长度
-            size(){
-                return this.stack.length;
-            }
-            isEmpty(){
-                return this.stack.length === 0;
-            }
-        }
-        
-        class StackQueue{
-    
-            // 构造函数
-            constructor(){
-                this.stack = [];
-            }
-
-            push(item){
-                this.stack.push(item);
-            }
-            // 删除队列第一个元素
-            pop(){
-
-            }
-
-
-            // 入队
-
-            // 出队
-        }
-
-
-    }
+ 
        
     
