@@ -1,5 +1,3 @@
-import { cursorTo } from "readline";
-
 // 给定一个没有重复数字的序列 返回其所有可能的全排列
 const arr = [1,2,3];
 

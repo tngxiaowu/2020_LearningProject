@@ -1,0 +1,31 @@
+<!-- html被压缩过 -->
+<html>
+    <head>
+    <meta charset = ”UTF-8”>
+    <!-- 内嵌CSS -> 注入Chunk app依赖的css -->
+    <style rel=”stylesheet”> 
+        h1{color : red}
+    </style>
+
+    <!-- 内嵌JS -> google analytics代码 -->  
+    <script>
+    ( function(){
+        // google 
+    })
+    </script>
+   
+    <!--  异步加载JS -> 评论脚本 -->
+    <script async src=” https://diveinto.webpack.dsqus.com/embed.js”>
+    </script>
+    </head>
+    
+    <body>
+    <div id=”app”>
+    </div>
+    <!--  加载所需脚本 -->
+    <script src=”app_746f32b2.js”></script>
+    
+    <!-- Disqus 评论容器 -->
+    <div id=”disqus thread"></div>
+    </body>
+    </html>
