@@ -6,7 +6,6 @@ const arr = [1,2,3];
 
 const permute =  ( nums ) => {
     const len = nums.length;
-
     
     const res = [];
 
