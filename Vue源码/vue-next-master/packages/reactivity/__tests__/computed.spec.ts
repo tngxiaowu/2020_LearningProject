@@ -14,7 +14,7 @@ describe('reactivity/computed', () => {
   it('should return updated value', () => {
     const value = reactive<{ foo?: number }>({}) // 传入一个空对象 
     const cValue = computed(() => value.foo) // 返回对象中的foo属性
-    expect(cValue.value).toBe(undefined)
+    expect(cValue.value).toBe(undefined) 
     value.foo = 1
     expect(cValue.value).toBe(1)
   })

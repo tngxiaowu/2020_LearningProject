@@ -11,7 +11,7 @@ import { computed } from '../src/computed'
 
 describe('reactivity/reactive', () => {
   mockWarn()
-  // 测试用例1
+  // 测试用例1 
   test('Object', () => {
     const original = { foo: 1 }
     const observed = reactive(original)
