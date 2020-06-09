@@ -1,41 +1,31 @@
-// 给定一个没有重复数字的序列 返回其所有可能的全排列
-const arr = [1,2,3];
+// 广度遍历
 
-// 解题思路: 由树到递归
+// 给定一组不含重复元素的整数数组nums 返回该数组所有可能的子集(幂集)
 
-
-const permute =  ( nums ) => {
-    const len = nums.length;
-    
-    const res = [];
-
-    const visited = {};
-
-    function dfs(nth){
-        if( nth === len ){
+const enums = [1,2,3];
 
 
-        }
+function getSubCollection(enums){
+    const res = []; // 最终返回的结果
+    const l = enums.length; // 数组长度
+    let start = 0;
+    const subSet = [];
 
-        for( let i = 0; i < len; i++){
-            if(!visited[nums[i]]){
-                visited[ nums[i]] = 1
-                curr.push( nums[i])
+    dfs(0);
 
-                dfs( nth + 1 );
+    function dfs(index){
+        res.push(subSet.slice());
 
-                curr.pop()
-
-                visited[nums[i]] = 0
-            }
+        for(let i = index; i < l;i++){
+            subSet.push(enums[i]);
+            dfs(i+1);   
+            subSet.pop();//最后一步
 
         }
+
 
     }
 
-    dfs(0); // 从0号索引开始递归
-
-    return res;
 
 
 }

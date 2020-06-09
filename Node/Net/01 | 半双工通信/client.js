@@ -1,4 +1,4 @@
-const lessonId = ['',''];
+const lessonId = ['01','02'];
 
 const net = require('net');
 // 实例化一个socket
