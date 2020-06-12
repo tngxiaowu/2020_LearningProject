@@ -178,3 +178,20 @@ class defaultOptions{
         }
     }
 }
+
+addEntry(context, entry, name, callback) {
+    // 执行compation类中的addEntry钩子
+    this.hooks.addEntry.call(entry, name);
+
+    // 处理slot
+    const slot = {};
+    const idx = this._preparedEntrypoints.findIndex(slot => slot.name === name);
+    if (idx >= 0) {
+        // Overwrite existing entrypoint
+        this._preparedEntrypoints[idx] = slot;
+    } else {
+        this._preparedEntrypoints.push(slot);
+    }
+    // 执行_addModuleChain方法
+    this._addModuleChain();
+}
