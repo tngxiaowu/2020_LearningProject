@@ -214,7 +214,7 @@ export function createAppAPI<HostElement>(
               render(cloneVNode(vnode), rootContainer)
             }
           }
-
+          
           if (isHydrate && hydrate) {
             hydrate(vnode as VNode<Node, Element>, rootContainer as any)
           } else {
