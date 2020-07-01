@@ -76,18 +76,25 @@ const tree = {
     }
 } 
 
-// 使用栈堆方法处理
+const mockTree = {
+    val:'A',
+    left:{
+        val:'B'
+    },
+    right:{
+        val:'C'
+    }
+} 
 
+// 使用栈堆方法处理
+// 栈的特点是 先进后出
+// [{ val:1,left:{},right:{}}]  ->  [{val:'C'},{ val:'B'}]
 // 前序遍历
 const preorderTraversal = root => {
     const res = []
-
     if(!root) return res;
-
     const stack = [];
-
     stack.push(root)
-
     while(stack.length){
         const cur = stack.pop()
         res.push(cur.val)
@@ -97,6 +104,28 @@ const preorderTraversal = root => {
     return res;
 }
 
+// 中序遍历
+
+
+
+
+// 后序遍历
+// 每个节点的根节点是放在最后的
+const postOrderTraversal = root => {
+    const res = []
+    if(!root) return res;
+    const stack = [];
+    stack.push(root)
+
+    while(stack){
+        const cur = stack.pop() // 从栈的尾部弹出一个
+        res.unshift(cur.val)
+        if(cur.right) stack.push( cur.right)
+        if(cur.left)  stack.push(cur.left)
+    }
+
+    return res;
+}
 
 
 
