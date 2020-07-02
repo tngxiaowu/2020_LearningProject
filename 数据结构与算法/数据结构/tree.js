@@ -87,8 +87,10 @@ const mockTree = {
 } 
 
 // 使用栈堆方法处理
+// 递归和栈有着脱不开的关系
 // 栈的特点是 先进后出
 // [{ val:1,left:{},right:{}}]  ->  [{val:'C'},{ val:'B'}]
+
 // 前序遍历
 const preorderTraversal = root => {
     const res = []
@@ -96,7 +98,8 @@ const preorderTraversal = root => {
     const stack = [];
     stack.push(root)
     while(stack.length){
-        const cur = stack.pop()
+        const cur = stack.pop() // 这是一个出栈的时机
+        // 一旦出栈的时机变了 那么入栈的时机也会发生改变
         res.push(cur.val)
         if(cur.right) stack.push(cur.right)
         if(cur.left) stack.push(cur.left)
@@ -104,10 +107,30 @@ const preorderTraversal = root => {
     return res;
 }
 
-// 中序遍历
+// 中序遍历: 左节点 -> 根节点 -> 右节点
+// 在中序遍历中 根节点不再出现在遍历顺序的中间
+const middleOrderTraversal = root => {
+    const res =[]
+    if(!root) return res
+    const stack = []
+    
+    let cur = root
+    // 对栈进行处理
+    while(cur || stack.length){
+        // 将左子树放置到
+        while(cur){
+            stack.push(cur)
+            cur = cur.left
+        }
 
+        cur = stack.pop()
+        res.push(cur.val)
 
+        cur = cur.right // 再把右子树的东西放置进去
 
+    }
+    return res;
+}
 
 // 后序遍历
 // 每个节点的根节点是放在最后的
@@ -146,4 +169,21 @@ const invertTree = root => {
 }
 
 invertTree(tree)
+
+
+
+// 异步1
+// 异步2
+
+{
+
+}
+{
+
+}
+
+
+
+
+
 
