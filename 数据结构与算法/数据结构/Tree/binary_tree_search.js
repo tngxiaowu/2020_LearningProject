@@ -10,13 +10,6 @@ class TreeNode{
 const fakeData = [1,null,2,3];
 
 // 使用递归进行先序遍历
-
-
-
-
-
-
-
 // [ root,left,right, left-left,left-right,right-left,right-right]
 // 栈的出栈顺序 符合二叉树的前序遍历规则
 // 前序遍历: 根节点 -》 左节点 -> 右节点

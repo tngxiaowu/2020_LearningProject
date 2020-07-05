@@ -1,8 +1,13 @@
 {
     "presets": ["next/babel"],
     "plugins": [
-        "import",{
+        ["import",{
             "libraryName":"antd"  // 在webpack加载代码之前 先做预处理
-        }
+        }],
+        [
+            "style-componnet",{ "ssr": true } // 预编译style-component
+        ]
+
+        
     ]
 }

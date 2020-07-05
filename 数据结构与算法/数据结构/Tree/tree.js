@@ -151,6 +151,29 @@ const postOrderTraversal = root => {
 }
 
 
+// 二叉树遍历衍生问题
+
+const getLevelContent = root => {
+    const res = []
+    if(!root) return res;
+    const stack = [];
+    stack.push(root);
+
+    while(stack.length){
+        const level = [] // 每一次的信息
+        const len = stack.length;
+
+        for(let i = 0; i < len; i++){
+            const top = stack.shift()
+            level.push(top.val)
+            if(top.left) stack.push(top.left)
+            if(top.right) stack.push(top.right)
+        }
+        res.push(level)
+    }
+
+    return res;
+}
 
 
 // -> 反转二叉树
@@ -169,18 +192,6 @@ const invertTree = root => {
 }
 
 invertTree(tree)
-
-
-
-// 异步1
-// 异步2
-
-{
-
-}
-{
-
-}
 
 
 
