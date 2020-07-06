@@ -2,6 +2,8 @@
 
 import App,{ Container } from 'next/app'
 import Layout from '../components/Layout'
+import MyContext from '../lib/my-context'
+import { Provider } from 'react'
 
 // 引入antd的样式
 import 'antd/dist/antd.css'
@@ -9,7 +11,8 @@ import 'antd/dist/antd.css'
 
 class MyApp extends App{
     state = {
-        conunt:1 
+        conunt:1,
+        context:
     }
 
 
@@ -29,7 +32,15 @@ class MyApp extends App{
 
         return(
             <Container>
-                <Component {...pageProps} />
+                <Provider>
+                {/* 值注入 */}
+                <MyContext.Provider value='test'>
+                    <Component {...pageProps} />
+                    <button onClick = { ()=>{  this.setState({ context:`${this.state.context}1111` }) } } > 
+                    Update Context 
+                    </button>
+                </MyContext.Provider>
+                </Provider>
             </Container>
         ) 
     }
