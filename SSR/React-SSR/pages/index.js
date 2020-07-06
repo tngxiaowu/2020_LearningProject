@@ -4,11 +4,7 @@ import Button from '../components/child'
 import conncet from 'react-redux'
 
 
-const Index = ({  count,name,add,rename })=>{
-
-}
-
-export default ({ count,name,add,rename }) => (
+const Index = ({ count,name,add,rename }) => (
     // 跳转到相关路由
     // 进行前端路由跳转
     // 指定渲染内容

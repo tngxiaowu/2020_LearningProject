@@ -1,5 +1,6 @@
 import { createStore,combineReducer,applyMiddleware } from 'redux'
 import ReducThunk from 'redux-thunk'
+import composeWithDevTools from 'redux-devtools-extension'
 
 const ADD = 'add'
 const UPDATE = 'UPDATE'
@@ -62,7 +63,7 @@ const allReducer = combineReducer({
 const store = createStore(combineReducer,{
     count: countInitialState,
     user: userInitialState
-},applicationCache(ReducThunk))
+},composeWithDevTools(applicationCache(ReducThunk)))
 
 store.getState()
 

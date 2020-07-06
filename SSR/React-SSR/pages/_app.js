@@ -4,6 +4,7 @@ import App,{ Container } from 'next/app'
 import Layout from '../components/Layout'
 import MyContext from '../lib/my-context'
 import { Provider } from 'react'
+import store from '../store/store'
 
 // 引入antd的样式
 import 'antd/dist/antd.css'
@@ -32,7 +33,7 @@ class MyApp extends App{
 
         return(
             <Container>
-                <Provider>
+                <Provider store={store} >
                 {/* 值注入 */}
                 <MyContext.Provider value='test'>
                     <Component {...pageProps} />
