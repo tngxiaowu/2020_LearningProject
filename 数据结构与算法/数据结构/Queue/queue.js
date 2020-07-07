@@ -1,3 +1,44 @@
+    // 使用数组模仿队列
+    {
+        class ArrayQueue{
+            constructor(){
+                this.queue = []
+            }
+
+            // 添加元素到队列
+            enqueue(...args){
+                this.queue.push(...args)
+            }
+
+
+            // 删除队头元素
+            dequeue(){
+                this.queue.shift()
+            }
+
+            // 获取队头
+
+            // 获取队尾
+
+            size(){
+                return this.queue.length
+            }
+
+            isEmpty(){
+                return this.queue.length === 0
+            }
+
+
+
+        }
+
+
+    }
+
+
+
+    
+    
     // 使用栈去模仿队列
     // 栈和队列的区别:
     // 栈: 先进后出(羽毛球桶)  队列: 先进先出(十字路口的车队)

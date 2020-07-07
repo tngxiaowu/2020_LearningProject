@@ -10,15 +10,17 @@
     }
     // 栈顶删除一个元素
     pop() {
-      let l = this.stack.length;
-      if (l >= 1) {
-        this.stack.length = l - 1;
-      }
+      return this.stack.pop()
+    }
+    // 计算栈的顶部元素
+    peek(){
+      return this.isEmpty() ? undefined : this.stack[this.size - 1]
     }
     // 计算栈的长度
     size(){
       return this.stack.length;
     }
+    // 计算栈顶是否为空
     isEmpty(){
       return this.stack.length === 0;
     }

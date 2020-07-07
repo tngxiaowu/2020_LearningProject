@@ -1,18 +1,33 @@
-import Link from 'next/link'
-import Button from '../components/child'
+import { useEffect,useCallback } from 'react'
+import { Layout, Icon,Input,Avatar } from 'antd';
+import { useEffect, useCallback } from 'react';
+const { Header, Content, Footer } = Layout;
 
-export default ( { children } ) => (
-    // 全局组件
-    <> 
-    <header>
-        <Link>
-            <Button> Button A </Button>
-        </Link>
-        <Link>
-            <Button> Button B</Button>
-        </Link>
-    </header>
-    // 组件内容
-    { children }
-    </>
-)
+export default ( { children } ) => {
+    const [searchVal,setSearchVal] = useEffect('')
+    let handleChange = useCallback(  (e)=>{  setSearchVal(e.target.value) } )
+    let handleSearch = useCallback( ()=> { )
+
+
+    return (
+        <Layout>
+            <Header>
+                <div  className='header-contaniner'>
+                    <div className='header-left'>
+                        <Icon>   </Icon>
+                        <Input.Search  value={searchVal}  onChange={handleChange}  onSearch={handleSearch}  placeholder='请输入内容' />
+                    </div>
+                    <div className='header-right'>
+                        <Avatar>
+                    </div>
+                </div>
+            </Header>
+            <Content>
+            { children }
+            </Content>
+            <Footer>
+                Develop By Unknown Author
+            </Footer>
+        </Layout>
+    )
+    }
