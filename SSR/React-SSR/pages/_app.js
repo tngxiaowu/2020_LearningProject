@@ -5,6 +5,10 @@ import Layout from '../components/Layout'
 import MyContext from '../lib/my-context'
 import { Provider } from 'react'
 import store from '../store/store'
+import Router from 'next/router'
+
+
+import PageLoad from '../components/PageLoading' 
 
 // 引入antd的样式
 import 'antd/dist/antd.css'
@@ -12,9 +16,36 @@ import 'antd/dist/antd.css'
 
 class MyApp extends App{
     state = {
-        conunt:1,
-        context:
+        context:'value',
+        loading: false,
     }
+
+    startLoading = () => {
+        this.setState({
+            loading: true,
+        })
+    }
+
+    stopLoading = () => {
+        this.setState({
+            loading: false,
+        })
+    }
+
+    componentDidMount(){
+        Router.events.on('rootChangeStart',this.startLoading)
+        Router.events.on('rootChangeComplete',this.stopLoading)
+        Router.events.on('rootChangeError',this.stopLoading)
+    }
+
+    componentWillUnmount(){
+        Router.events.off('rootChangeStart',this.startLoading)
+        Router.events.off('rootChangeComplete',this.stopLoading)
+        Router.events.off('rootChangeError',this.stopLoading)
+
+    }
+
+    
 
 
     // 给组件自定义传数据
@@ -33,14 +64,10 @@ class MyApp extends App{
 
         return(
             <Container>
-                <Provider store={store} >
+                <Provider store={store}>
                 {/* 值注入 */}
-                <MyContext.Provider value='test'>
-                    <Component {...pageProps} />
-                    <button onClick = { ()=>{  this.setState({ context:`${this.state.context}1111` }) } } > 
-                    Update Context 
-                    </button>
-                </MyContext.Provider>
+                    { this.state.loading ? <PageLoad /> : null }
+                        <Component {...pageProps} />
                 </Provider>
             </Container>
         ) 

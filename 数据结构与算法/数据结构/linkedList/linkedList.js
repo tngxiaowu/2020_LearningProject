@@ -1,17 +1,137 @@
 let head = Symbol('head');
+let A_SIMPLE_DOUBLY = {
+    head:{
+        value:'1',
+        prev:null,
+        next:null,
+    },// 头部节点
+    tail:{
+        value: '1',
+        prev: null,
+        next: null
+    } // 尾部节点
+
+}
 
 // 链表中的某个节点
-// 单链表
 class Node{
-    constructor(element){
-        this.element = element;
+    constructor(data){
+        this.data = data;
         this.next = null;
+        this.prev = null; // 为了兼容双向列表
     }
 }
+
+
+// 单链表
 
 // 循环链表
 
 // 双向链表
+// 示例的数据结构
+
+
+
+const doubleLinkedList = {
+    head:{
+        value:1,
+        prev: null,
+        next: null,
+    },
+    tail:{
+        value:1,
+        prev: null,
+        next: { 
+            value:2,
+            perv: {
+                value:1,
+                prev:null,
+                next:null,
+            },
+            next:null,  },
+    }
+}
+
+const demoNode = {
+    value:2,
+    perv: {
+        value:1,
+        prev:null,
+        next:null,
+    },
+    next:null,
+
+}
+
+class Node{
+    constructor(data){
+        this.data = data;
+        this.next = null;
+        this.prev = null; // 为了兼容双向列表
+    }
+}
+
+class DoublyLinkedList{
+    constructor(){
+        this.head = null // 开头
+        this.tail = null // 结尾
+    }
+    
+    // 在链表尾部新增一个节点
+    add(item){
+        const node = new Node(item)
+        // 如果头部没有信息 那么先添加头部
+        if(this.head === null){
+            this.head = node;
+            this.tail = node;
+        }// 如果链表有了头 那么在尾部添加节点即可
+        else{
+            node.prev = this.tail // 新增节点的上一个节点是尾节点
+            this.tail.next = node // 尾部节点的下个节点为该节点(主要是为头部节点服务的)
+            this.tail = node // 重新替换
+        }
+    }
+
+    // 在特定位置插入值
+    addAt(index,value){
+        let current = this.head; // 当前节点
+        let counter = 0; // 层级数
+        let node = new Node(item); // 新增节点
+        // 如果counter为0 那就是说添加到头部
+        if(index === 0){
+            this.head.prev = node;
+            node.next = this.head
+            this.head = node
+        }else{
+            while(current){
+                current = current.next
+
+                if(counter === index){
+                    current.
+
+                }
+                counter++
+
+            }
+
+
+        }
+
+
+    }
+
+}
+
+  const d1 = new Node(1)
+  const d2 = new Node(2)
+  
+  const Linked = new DoublyLinkedList()
+
+  Linked.add(d1)
+  Linked.add(d2)
+
+  console.log(Linked,'linked')
+
 
 // 双向循环链表
 
