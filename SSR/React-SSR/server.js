@@ -1,5 +1,5 @@
 const next = require('next')
-const server = new require('koa')
+const server = new (require('koa'))
 const Router = require('koa-router')
 const dev = process.env.NODE_ENV !== 'production'
 const session = require('koa-session')
@@ -11,6 +11,8 @@ const redis = new Redis()
 const app = next({ dev })
 const handler = app.getRequestHandler() // nextjs作为中间件
 
+const api = require('./server/api')
+
 app.prepare().then( ()=>{
     const router = new Router()
 
@@ -21,6 +23,8 @@ app.prepare().then( ()=>{
     }
 
     server.use(session(SESSION_CONFIG,server))
+
+    api(server)
 
     // session()所做的事
     // server.use( ctx =>{
