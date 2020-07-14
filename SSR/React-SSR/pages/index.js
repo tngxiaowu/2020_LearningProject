@@ -1,46 +1,69 @@
-import Link from 'next/link'
-import Router from 'next/router'
-import Button from '../components/child'
-import conncet from 'react-redux'
+import { connect } from 'react-redux'
+import { button, Button } from 'antd' 
 
 
-const Index = ({ count,name,add,rename }) => (
-    // 跳转到相关路由
-    // 进行前端路由跳转
-    // 指定渲染内容
-    // Link节点下面的(根)节点必须是唯一
-    <Link href='/a?b=1'>
-        <Button> Index  </Button>
-        <span> Count:{ count } </span>
-        <input value={name} onChange={ e => rename(e.target.value)}/>
-        <button onClic={ ()=> add(count) } > Do Add </button>
-    </Link>
-)
+const api = require('../lib/api')
 
-export default conncet( function mapStateToProps(state){
-    return {
-        count: state.counter.count,
-        name: state.user.name,
+
+function Index({ userRepos,user }){
+    // 用户未登录时的信息
+    if(!user || user.id){
+        return (
+            <div className='root' >
+                 <p> 亲，您还未登录哦 </p>
+                 <Button type='primary'  hred='login'>  
+                    登录  
+                 </Button>
+                 <style jsx>
+                     `
+                     .root{
+                         display: felx
+                     }
+                     
+                     `
+                 </style>
+            </div>
+        )
+    }
+    // 用户登录后的信息
+    return (
+        <div className='root'>
+            <div className='userInfo'>
+                userInfo
+            </div>
+            <div className='userRepo'>
+                userRepos
+            </div>
+        </div>
+    )
+    
+}
+
+Index.getInitialProps = async ( { ctx,reduxStore } ) =>{
+    const user = reduxStore.getState().user;
+    // 避免在用到需要token的接口时因为没有Token信息而返回401
+    if(!user || !use.id){
+        return {
+            isLogin:false
+        }
     }
 
-} ,function mapActionToProps(dispatch){
-    return {
-        add: num =>{ dispatch({ type:'add', num }) },
-        rename: name =>{ dispatchEvent({ type:'update', name }) }
-    }
-})(Index)
+    const result = await api.request({
+        url:'/user/props'
+    },
+    ctx.req,
+    ctx.res)
 
-// export default () => {
-//     // 和使用Link一样(因为内部实现是相同的)
-//     function goToRouter(){
-//         Router.push({
-//             pathName:'/test',
-//             query:{
-//                 id:1
-//             }
-//         })
-//     }
-//     return (
-//         <Button onClick={ goToRouter } > Click Me </Button>
-//     )
-// }
+    return {
+        isLogin: true,
+        userRepos: result.data,
+    }
+}  
+
+export default connect(
+    function mapState(state){
+        return {
+            user: state.user
+        }
+    }
+)(index)
