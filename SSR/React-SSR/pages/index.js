@@ -1,11 +1,42 @@
 import { connect } from 'react-redux'
-import { button, Button } from 'antd' 
+import { button, Button, Tabs} from 'antd' 
+import {  useEffect } from 'react'
+
+import Router ,{ withRouter }from 'next/router'
+
+import LRU from 'lru-cache'
+
+
+import Repo from '../components/userReps'
+
+
+const  isServer = typeof window === 'undefined'
+let cachedUserRepos;
+
+const cache = new LRU({
+    maxAge: 10 * 1000 * 60
+})
 
 
 const api = require('../lib/api')
 
 
-function Index({ userRepos,user }){
+function Index({ userRepos,user,router}){
+
+
+    const { key:tabkey = '1' } = router.query
+  
+    const handleTabChange = ( tabKey )=>{
+        Router.push(`key=${tabKey}`)
+    }
+
+    useEffect(()=>{
+        if(!isServer){
+            cache.set('useRepos',userRepos)
+        }
+    },[userRepos])
+
+
     // 用户未登录时的信息
     if(!user || user.id){
         return (
@@ -32,7 +63,18 @@ function Index({ userRepos,user }){
                 userInfo
             </div>
             <div className='userRepo'>
-                userRepos
+                <Tabs  defaultActiveKey={tabKey} animated={false}>
+                    <Tabs.TabPane  tab='你的仓库' key='1' >
+                        {userRepos.map(  userRepo =>{
+                            <Repo userReop={ userRepo }  />
+                        })}
+                    </Tabs.TabPane>
+                    <Tabs.TabPane  tab='你关注的仓库' key='2' >
+                        {userRepos.map(  userRepo =>{
+                            <Repo userReop={ userRepo }  />
+                        })}
+                    </Tabs.TabPane>
+                </Tabs>
             </div>
         </div>
     )
@@ -48,6 +90,15 @@ Index.getInitialProps = async ( { ctx,reduxStore } ) =>{
         }
     }
 
+    if(!isServer){
+        if(cache.get('useRepos')){
+            return {
+                isLogin: true,
+                userReops:cache.get('useRepos')
+            }
+        }
+    }
+
     const result = await api.request({
         url:'/user/props'
     },
@@ -60,10 +111,10 @@ Index.getInitialProps = async ( { ctx,reduxStore } ) =>{
     }
 }  
 
-export default connect(
+export default withRouter(connect(
     function mapState(state){
         return {
             user: state.user
         }
     }
-)(index)
+)(index))
